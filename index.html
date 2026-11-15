@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hamilton's Mission: A Space Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <!-- CAMADA DE TRANSIÇÃO RETRO (FADE-TO-BLACK) -->
+  <div id="screen-fader" class="screen-fader"></div>
+
+  <!-- CENA 1: ABERTURA ESPACIAL (APOLLO COPILOT BRIEFING) -->
+  <section id="intro-overlay" class="overlay space-bg">
+    <div class="intro-container pixel-box">
+      <div class="intro-top">
+        <span class="badge-nasa">TEAM HAMILTON // NASA SPACE APPS</span>
+        <button id="btn-lang-intro" class="btn-pixel btn-small">LANG: EN</button>
+      </div>
+
+      <h1 class="game-logo">HAMILTON'S MISSION:<br /><span>A SPACE ADVENTURE</span></h1>
+
+      <canvas id="intro-canvas" width="640" height="170"></canvas>
+
+      <div class="rpg-dialogue-box">
+        <div class="dialogue-speaker" id="intro-speaker">APOLLO COPILOT // TRANSMISSION 1/3</div>
+        <p id="intro-text" class="dialogue-text"></p>
+      </div>
+
+      <div class="intro-actions">
+        <button id="btn-intro-skip" class="btn-pixel btn-secondary" data-i18n="introSkip">SKIP &gt;&gt;</button>
+        <button id="btn-intro-next" class="btn-pixel btn-primary" data-i18n="introNext">NEXT &gt;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CENA 2: REGISTRO DO(A) COMANDANTE -->
+  <section id="setup-overlay" class="overlay hidden">
+    <div class="setup-card pixel-box">
+      <span class="badge-nasa">TEAM HAMILTON PRESENTS</span>
+      <h2 data-i18n="setupTitle">COMMANDER REGISTRATION</h2>
+      <p data-i18n="setupDesc">Customize your profile before taking command of the station.</p>
+
+      <label for="commander-name" data-i18n="nameLabel">COMMANDER NAME:</label>
+      <input
+        type="text"
+        id="commander-name"
+        maxlength="16"
+        data-i18n-placeholder="namePlaceholder"
+        placeholder="Ex: Maya, Lucas..."
+        value="Hamilton"
+      />
+
+      <label data-i18n="avatarLabel">SELECT AVATAR:</label>
+      <div class="gender-selector">
+        <button type="button" class="gender-btn active" data-gender="female">
+          <!-- Ícone Pixel Art Feminino -->
+          <svg class="pixel-icon-lg" viewBox="0 0 12 12" shape-rendering="crispEdges">
+            <rect x="3" y="1" width="6" height="2" fill="#3b2314" />
+            <rect x="2" y="2" width="8" height="2" fill="#3b2314" />
+            <rect x="1" y="4" width="2" height="4" fill="#3b2314" />
+            <rect x="9" y="4" width="2" height="4" fill="#3b2314" />
+            <rect x="3" y="4" width="6" height="4" fill="#f1c27d" />
+            <rect x="4" y="5" width="1" height="1" fill="#0f172a" />
+            <rect x="7" y="5" width="1" height="1" fill="#0f172a" />
+            <rect x="3" y="8" width="6" height="3" fill="#2563eb" />
+            <rect x="5" y="8" width="2" height="3" fill="#93c5fd" />
+          </svg>
+          <span data-i18n="avatarFemale">COMMANDER (F)</span>
+        </button>
+
+        <button type="button" class="gender-btn" data-gender="male">
+          <!-- Ícone Pixel Art Masculino -->
+          <svg class="pixel-icon-lg" viewBox="0 0 12 12" shape-rendering="crispEdges">
+            <rect x="3" y="1" width="6" height="2" fill="#3b2314" />
+            <rect x="2" y="2" width="8" height="2" fill="#3b2314" />
+            <rect x="3" y="4" width="6" height="4" fill="#f1c27d" />
+            <rect x="4" y="5" width="1" height="1" fill="#0f172a" />
+            <rect x="7" y="5" width="1" height="1" fill="#0f172a" />
+            <rect x="3" y="8" width="6" height="3" fill="#2563eb" />
+            <rect x="5" y="8" width="2" height="3" fill="#93c5fd" />
+          </svg>
+          <span data-i18n="avatarMale">COMMANDER (M)</span>
+        </button>
+      </div>
+
+      <button id="btn-start-station" class="btn-pixel btn-primary" data-i18n="enterBtn">ENTER STATION &gt;&gt;</button>
+    </div>
+  </section>
+
+  <!-- CENA 3: ESTAÇÃO ESPACIAL (TELA PRINCIPAL DO JOGO) -->
+  <header class="top-bar">
+    <div class="brand">
+      <span class="badge-nasa">TEAM HAMILTON</span>
+      <div>
+        <h1>HAMILTON'S MISSION: A SPACE ADVENTURE</h1>
+        <small id="mission-subtitle">// MODE 1: LUNAR STATION</small>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <button id="btn-test-damage" class="btn-pixel btn-small" data-i18n="btnDamage">
+        TEST DAMAGE (-20)
+      </button>
+      <button id="btn-toggle-suit" class="btn-pixel btn-small" data-i18n="btnSuitM1">
+        JUDGE PASS: M1 (STATION)
+      </button>
+      <button id="btn-lang" class="btn-pixel btn-small">LANG: EN</button>
+    </div>
+  </header>
+
+  <main class="game-wrapper">
+    <!-- HUD DE RECURSOS (BARRAS SEGMENTADAS + RASTRO DE DANO) -->
+    <section class="hud-panel">
+      <div class="resource-box pixel-box-sm" id="res-energy">
+        <div class="res-header">
+          <span class="res-title">
+            <!-- Ícone Pixel Art Raio (Energia) -->
+            <svg class="pixel-icon" viewBox="0 0 12 12" shape-rendering="crispEdges">
+              <rect x="6" y="1" width="3" height="2" fill="#facc15" />
+              <rect x="4" y="3" width="4" height="2" fill="#facc15" />
+              <rect x="3" y="5" width="6" height="2" fill="#fef08a" />
+              <rect x="5" y="7" width="3" height="2" fill="#facc15" />
+              <rect x="4" y="9" width="2" height="2" fill="#eab308" />
+            </svg>
+            <span data-i18n="resEnergy">ENERGY</span>
+          </span>
+          <strong class="res-value">70%</strong>
+        </div>
+        <div class="segmented-bar">
+          <div class="bar-trail" style="width: 70%;"></div>
+          <div class="bar-fill energy" style="width: 70%;"></div>
+          <div class="bar-grid"></div>
+        </div>
+      </div>
+
+      <div class="resource-box pixel-box-sm" id="res-life">
+        <div class="res-header">
+          <span class="res-title">
+            <!-- Ícone Pixel Art Folha (Suporte de Vida) -->
+            <svg class="pixel-icon" viewBox="0 0 12 12" shape-rendering="crispEdges">
+              <rect x="6" y="2" width="4" height="2" fill="#4ade80" />
+              <rect x="4" y="4" width="6" height="2" fill="#22c55e" />
+              <rect x="3" y="6" width="5" height="2" fill="#4ade80" />
+              <rect x="2" y="8" width="2" height="2" fill="#15803d" />
+              <rect x="5" y="5" width="2" height="1" fill="#bbf7d0" />
+            </svg>
+            <span data-i18n="resLife">LIFE SUPPORT</span>
+          </span>
+          <strong class="res-value">70%</strong>
+        </div>
+        <div class="segmented-bar">
+          <div class="bar-trail" style="width: 70%;"></div>
+          <div class="bar-fill life" style="width: 70%;"></div>
+          <div class="bar-grid"></div>
+        </div>
+      </div>
+
+      <div class="resource-box pixel-box-sm" id="res-shield">
+        <div class="res-header">
+          <span class="res-title">
+            <!-- Ícone Pixel Art Escudo -->
+            <svg class="pixel-icon" viewBox="0 0 12 12" shape-rendering="crispEdges">
+              <rect x="2" y="1" width="8" height="2" fill="#38bdf8" />
+              <rect x="2" y="3" width="8" height="4" fill="#0284c7" />
+              <rect x="4" y="3" width="2" height="4" fill="#bae6fd" />
+              <rect x="3" y="7" width="6" height="2" fill="#0284c7" />
+              <rect x="5" y="9" width="2" height="2" fill="#38bdf8" />
+            </svg>
+            <span data-i18n="resShield">SHIELD</span>
+          </span>
+          <strong class="res-value">70%</strong>
+        </div>
+        <div class="segmented-bar">
+          <div class="bar-trail" style="width: 70%;"></div>
+          <div class="bar-fill shield" style="width: 70%;"></div>
+          <div class="bar-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENÁRIO INTERATIVO PIXEL ART -->
+    <section class="viewport-frame pixel-box">
+      <canvas id="station-canvas" width="800" height="350"></canvas>
+      <div class="controls-hint" data-i18n="controlsHint">
+        MOVE: [WASD / ARROWS] OR CLICK FLOOR  |  INTERACT WITH SERVER: [SPACE]
+      </div>
+    </section>
+
+    <!-- COMPUTADOR DE BORDO APOLLO (COPILOT COM ROSTO PIXELADO) -->
+    <footer class="apollo-console pixel-box">
+      <div class="apollo-unit">
+        <canvas id="apollo-face" width="64" height="64"></canvas>
+        <span class="apollo-tag">APOLLO AGC</span>
+      </div>
+      <div class="apollo-screen">
+        <div class="apollo-status-line" id="apollo-status-line">// STATUS: NOMINAL</div>
+        <p id="apollo-text" class="dialogue-text"></p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="js/canvasEngine.js"></script>
+</body>
+</html>
