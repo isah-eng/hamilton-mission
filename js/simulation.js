@@ -1,12 +1,13 @@
 (() => {
   // =========================================================================
-  // MOTOR DE SIMULAÇÃO & SISTEMAS ACOPLADOS (ETAPA 3)
+  // MOTOR DE SIMULAÇÃO & SISTEMAS ACOPLADOS (ETAPA 3 REFINADA)
   // =========================================================================
   const sim = {
     missions: [],
     currentMissionIndex: 0,
     turnIndex: 0,
     selectedLandingSite: 'jezero',
+    phaseBaseStats: { energy: 70, life: 70, shield: 75 },
     pendingCascade: null,
     turnHistory: [],
     activeModal: null
@@ -17,8 +18,13 @@
       turnWord: 'TURN',
       solWord: 'SOL',
       autonomousTag: '[AUTONOMOUS COMMAND // NO HINTS] ',
+      objectiveTitle: 'SHIFT OBJECTIVE & HOW TO PLAY',
+      objectiveBody:
+        'Survive 3 turns without letting any bar reach 0%. Walk to all 3 servers (Reactor, Bio-Dome, Defense) and press [SPACE] to compare trade-offs before executing 1 protocol per turn.',
+      carriedStatsTitle: 'CARRIED-OVER RESERVES FROM PREVIOUS PHASE:',
+      initialStatsTitle: 'INITIAL STATION RESERVES:',
       nasaSourceLabel: 'NASA TELEMETRY SOURCE',
-      landingTitle: 'SELECT MARS LANDING ZONE (NASA DATA)',
+      landingTitle: 'SELECT MARS LANDING ZONE (MODIFIES YOUR RESERVES)',
       startMissionBtn: 'LAUNCH SHIFT >>',
       resumeMissionBtn: 'RESUME COMMAND >>',
       serverHeader: {
@@ -41,8 +47,8 @@
       rankStandard: 'GRADE: MISSION COMMANDER STANDARD',
       rankEmergency: 'GRADE: EMERGENCY SURVIVAL (BARELY INTACT < 20%)',
       citizenBtn: 'OPEN NASA CITIZEN SCIENCE >>',
-      nextPhaseBtn: 'NEXT LUNAR PHASE >>',
-      unlockMarsBtn: 'UNLOCK MODE 2: MARS & EVA SUIT >>',
+      nextPhaseBtn: 'NEXT LUNAR PHASE (KEEP BARS) >>',
+      unlockMarsBtn: 'UNLOCK MODE 2: MARS (KEEP BARS) >>',
       replayCampaignBtn: 'PLAY AGAIN FROM PHASE 01 >>',
       marsVictoryTitle: 'MARS EXPEDITION ACCOMPLISHED!',
       marsVictoryNote: (name) =>
@@ -59,8 +65,13 @@
       turnWord: 'TURNO',
       solWord: 'SOL',
       autonomousTag: '[COMANDO AUTÔNOMO // SEM DICAS] ',
+      objectiveTitle: 'OBJETIVO DA FASE E COMO JOGAR',
+      objectiveBody:
+        'Sobreviva a 3 turnos sem deixar nenhuma barra chegar a 0%. Caminhe até os 3 servidores (Reator, Bio-Estufa, Defesa) e aperte [ESPAÇO] para comparar os efeitos antes de executar 1 protocolo por turno.',
+      carriedStatsTitle: 'RESERVAS HERDADAS DA FASE ANTERIOR:',
+      initialStatsTitle: 'RESERVAS INICIAIS DA ESTAÇÃO:',
       nasaSourceLabel: 'FONTE DE TELEMETRIA NASA',
-      landingTitle: 'ESCOLHA A ZONA DE POUSO EM MARTE (DADOS NASA)',
+      landingTitle: 'ESCOLHA A ZONA DE POUSO EM MARTE (ALTERA SUAS RESERVAS)',
       startMissionBtn: 'INICIAR TURNO >>',
       resumeMissionBtn: 'VOLTAR AO COMANDO >>',
       serverHeader: {
@@ -83,8 +94,8 @@
       rankStandard: 'GRAU: COMANDANTE DE MISSÃO PADRÃO',
       rankEmergency: 'GRAU: SOBREVIVÊNCIA DE EMERGÊNCIA (NO LIMITE < 20%)',
       citizenBtn: 'ACESSAR CIÊNCIA CIDADÃ DA NASA >>',
-      nextPhaseBtn: 'PRÓXIMA FASE LUNAR >>',
-      unlockMarsBtn: 'LIBERAR MODO 2: MARTE & TRAJE EVA >>',
+      nextPhaseBtn: 'PRÓXIMA FASE LUNAR (MANTER BARRAS) >>',
+      unlockMarsBtn: 'LIBERAR MODO 2: MARTE (MANTER BARRAS) >>',
       replayCampaignBtn: 'JOGAR NOVAMENTE DESDE A FASE 01 >>',
       marsVictoryTitle: 'EXPEDIÇÃO MARTE CONCLUÍDA!',
       marsVictoryNote: (name) =>
@@ -122,6 +133,30 @@
       .join('');
 
     return html || `<span class="stat-pill">0%</span>`;
+  }
+
+  function formatAbsolutePills(statsObj, lang) {
+    const labels = UI_STRINGS[lang].resLabels;
+    return ['energy', 'life', 'shield']
+      .map((k) => {
+        const val = Math.max(0, Math.min(100, Math.round(statsObj[k])));
+        const cls = val < 30 ? 'neg' : 'pos';
+        return `<span class="stat-pill ${cls}">${labels[k]}: ${val}%</span>`;
+      })
+      .join('');
+  }
+
+  function computeEffectiveMarsStats(mission) {
+    const stats = { ...sim.phaseBaseStats };
+    if (mission.mode === 2 && Array.isArray(mission.landingSites)) {
+      const chosenSite = mission.landingSites.find((s) => s.id === sim.selectedLandingSite);
+      if (chosenSite && chosenSite.statBonus) {
+        stats.energy = Math.max(5, Math.min(100, stats.energy + (chosenSite.statBonus.energy || 0)));
+        stats.life = Math.max(5, Math.min(100, stats.life + (chosenSite.statBonus.life || 0)));
+        stats.shield = Math.max(5, Math.min(100, stats.shield + (chosenSite.statBonus.shield || 0)));
+      }
+    }
+    return stats;
   }
 
   function syncTelemetryUI(prefixNote = '') {
@@ -165,14 +200,21 @@
   }
 
   // =========================================================================
-  // MODAL 1: BRIEFING DA FASE (E SELETOR DE POUSO NO MODO 2)
+  // MODAL 1: BRIEFING DA FASE (OBJETIVOS + RESERVAS + POUSO EM MARTE)
   // =========================================================================
-  function openBriefingModal(isNewMissionStart = true) {
+  function openBriefingModal(isNewMissionStart = true, isCarriedOver = false) {
     const mission = getMission();
     if (!mission) return;
 
     const lang = window.GameBridge.getLang();
     const dict = UI_STRINGS[lang];
+
+    const previewStats =
+      isNewMissionStart
+        ? mission.mode === 2
+          ? computeEffectiveMarsStats(mission)
+          : sim.phaseBaseStats
+        : window.GameBridge.getResources();
 
     let landingHtml = '';
     if (mission.mode === 2 && isNewMissionStart && Array.isArray(mission.landingSites)) {
@@ -201,12 +243,26 @@
         <h2>${mission.title[lang]}</h2>
         <span class="badge-nasa">MODE ${mission.mode}</span>
       </div>
+
+      <div class="objective-box">
+        <small>${dict.objectiveTitle}</small>
+        <p>${dict.objectiveBody}</p>
+      </div>
+
       <p class="modal-body-text">${mission.historyRef[lang]}</p>
+
       <div class="nasa-source-box">
         <small>${dict.nasaSourceLabel}</small>
         <p>${mission.source}</p>
       </div>
+
       ${landingHtml}
+
+      <div class="nasa-source-box">
+        <small>${isCarriedOver ? dict.carriedStatsTitle : dict.initialStatsTitle}</small>
+        <div class="stat-pills" id="briefing-res-preview">${formatAbsolutePills(previewStats, lang)}</div>
+      </div>
+
       <div class="modal-actions">
         <button id="btn-confirm-briefing" class="btn-pixel btn-primary">
           ${isNewMissionStart ? dict.startMissionBtn : dict.resumeMissionBtn}
@@ -214,28 +270,28 @@
       </div>
     `;
 
-    openModal(html, { type: 'briefing', isNewMissionStart });
+    openModal(html, { type: 'briefing', isNewMissionStart, isCarriedOver });
 
     document.querySelectorAll('.landing-option').forEach((btn) => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.landing-option').forEach((b) => b.classList.remove('selected'));
         btn.classList.add('selected');
         sim.selectedLandingSite = btn.dataset.site;
+
+        // Atualiza ao vivo a prévia das barras conforme a zona de pouso escolhida
+        const updatedPreview = computeEffectiveMarsStats(mission);
+        const previewContainer = document.getElementById('briefing-res-preview');
+        if (previewContainer) {
+          previewContainer.innerHTML = formatAbsolutePills(updatedPreview, lang);
+        }
       });
     });
 
     document.getElementById('btn-confirm-briefing').addEventListener('click', () => {
       if (isNewMissionStart) {
-        const stats = { ...mission.initialStats };
-        if (mission.mode === 2 && Array.isArray(mission.landingSites)) {
-          const chosenSite = mission.landingSites.find((s) => s.id === sim.selectedLandingSite);
-          if (chosenSite && chosenSite.statBonus) {
-            stats.energy += chosenSite.statBonus.energy || 0;
-            stats.life += chosenSite.statBonus.life || 0;
-            stats.shield += chosenSite.statBonus.shield || 0;
-          }
-        }
-        window.GameBridge.setAllResources(stats);
+        const finalStartStats =
+          mission.mode === 2 ? computeEffectiveMarsStats(mission) : { ...sim.phaseBaseStats };
+        window.GameBridge.setAllResources(finalStartStats);
       }
       closeModal();
       syncTelemetryUI();
@@ -467,26 +523,45 @@
 
     document.getElementById('btn-next-mission').addEventListener('click', () => {
       if (isFinalMars) {
-        loadMissionByIndex(0);
+        // Reinicia a campanha inteira do zero com fade
+        loadMissionByIndex(0, { useFade: true, preserveStats: false });
       } else {
-        loadMissionByIndex(sim.currentMissionIndex + 1);
+        // Avança para a próxima fase mantendo exatamente onde as barras pararam!
+        loadMissionByIndex(sim.currentMissionIndex + 1, { useFade: true, preserveStats: true });
       }
     });
   }
 
   // =========================================================================
-  // NAVEGAÇÃO ENTRE FASES E MODO JUIZ
+  // NAVEGAÇÃO ENTRE FASES COM FADE-TO-BLACK E ACÚMULO DE RECURSOS
   // =========================================================================
-  function loadMissionByIndex(index) {
+  function loadMissionByIndex(index, options = {}) {
     if (!sim.missions.length) return;
-    sim.currentMissionIndex = Math.max(0, Math.min(sim.missions.length - 1, index));
-    sim.turnIndex = 0;
-    sim.pendingCascade = null;
-    sim.turnHistory = [];
+    const { useFade = true, preserveStats = false } = options;
+    const carriedStats = preserveStats ? window.GameBridge.getResources() : null;
 
-    const mission = getMission();
-    window.GameBridge.setMode(mission.mode);
-    openBriefingModal(true);
+    const applyMissionSetup = () => {
+      closeModal();
+      sim.currentMissionIndex = Math.max(0, Math.min(sim.missions.length - 1, index));
+      sim.turnIndex = 0;
+      sim.pendingCascade = null;
+      sim.turnHistory = [];
+
+      const mission = getMission();
+      window.GameBridge.setMode(mission.mode);
+      window.GameBridge.resetPlayerPosition();
+
+      sim.phaseBaseStats = preserveStats ? { ...carriedStats } : { ...mission.initialStats };
+      window.GameBridge.setAllResources(sim.phaseBaseStats);
+
+      openBriefingModal(true, preserveStats);
+    };
+
+    if (useFade && window.GameBridge.fadeTransition) {
+      window.GameBridge.fadeTransition(applyMissionSetup);
+    } else {
+      applyMissionSetup();
+    }
   }
 
   function jumpToMode(targetMode, isJudgePass) {
@@ -497,14 +572,16 @@
         : 0;
 
     if (targetIdx !== -1) {
-      loadMissionByIndex(targetIdx);
+      loadMissionByIndex(targetIdx, { useFade: true, preserveStats: false });
       if (isJudgePass) {
-        const lang = window.GameBridge.getLang();
-        window.GameBridge.sayApollo(
-          lang === 'en'
-            ? 'JUDGE PASS active: Mode 2 (Mars) unlocked early and EVA Space Suit equipped!'
-            : 'PASSE DE JUIZ ativo: Modo 2 (Marte) liberado e Traje Espacial EVA equipado!'
-        );
+        setTimeout(() => {
+          const lang = window.GameBridge.getLang();
+          window.GameBridge.sayApollo(
+            lang === 'en'
+              ? 'JUDGE PASS active: Mode 2 (Mars) unlocked early and EVA Space Suit equipped!'
+              : 'PASSE DE JUIZ ativo: Modo 2 (Marte) liberado e Traje Espacial EVA equipado!'
+          );
+        }, 500);
       }
     }
   }
@@ -512,7 +589,7 @@
   function startCampaign() {
     if (window.NasaService && window.NasaService.getState().ready) {
       sim.missions = window.NasaService.getState().missions;
-      loadMissionByIndex(0);
+      loadMissionByIndex(0, { useFade: false, preserveStats: false });
     }
   }
 
@@ -535,7 +612,7 @@
       syncTelemetryUI();
       if (!sim.activeModal) return;
       if (sim.activeModal.type === 'briefing') {
-        openBriefingModal(sim.activeModal.isNewMissionStart);
+        openBriefingModal(sim.activeModal.isNewMissionStart, sim.activeModal.isCarriedOver);
       } else if (sim.activeModal.type === 'server') {
         openServerModal(sim.activeModal.serverId);
       } else if (sim.activeModal.type === 'rewind') {

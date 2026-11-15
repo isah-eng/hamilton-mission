@@ -8,11 +8,12 @@
       introSkip: 'SKIP >>',
       introNext: 'NEXT >',
       introFinish: 'START SETUP >>',
-      introSpeaker: (step, total) => `APOLLO COPILOT // TRANSMISSION ${step}/${total}`,
+      introSpeaker: (step, total) => `APOLLO COPILOT // BRIEFING ${step}/${total}`,
       introSlides: [
-        'Greetings, Cadet! I am APOLLO, your onboard AI copilot. Earth needs commanders trained in real NASA space telemetry.',
-        'MODE 1 (Lunar Station): Clear all 3 real crisis phases to unlock MODE 2 (Mars) and the EVA suit. [Judges: use JUDGE PASS at the top to test Mode 2 anytime!]',
-        'Walk to the 3 physical servers—Reactor, Bio-Dome, and Defense—to balance Energy, Life Support, and Shield. Ready?'
+        'Greetings, Cadet! I am APOLLO, your onboard AI copilot. You are taking command of a space habitat powered by real NASA telemetry.',
+        'YOUR OBJECTIVE: Survive 3 Turns per phase without letting Energy, Life Support, or Shield drop to 0%. Your remaining bars carry over to the next phase!',
+        'HOW TO PLAY EACH TURN: Walk to the 3 servers (Reactor, Bio-Dome, Defense), press [SPACE] to compare their trade-offs, and execute 1 protocol per turn.',
+        'CAMPAIGN: Clear all 3 Lunar phases (Mode 1) to unlock Mars & the EVA suit (Mode 2) — or use JUDGE PASS at the top to test Mars anytime!'
       ],
       setupTitle: 'COMMANDER REGISTRATION',
       setupDesc: 'Customize your profile before taking command of the station.',
@@ -23,14 +24,14 @@
       avatarMale: 'COMMANDER (M)',
       enterBtn: 'ENTER STATION >>',
       subtitleM1: '// MODE 1: LUNAR STATION',
-      subtitleM2: '// MODE 2: JEZERO CRATER (MARS)',
-      btnBriefing: 'NASA DATA BRIEF',
+      subtitleM2: '// MODE 2: MARS EXPEDITION',
+      btnBriefing: 'MISSION RULES & DATA',
       btnSuitM1: 'JUDGE PASS: M1 (STATION)',
       btnSuitM2: 'JUDGE PASS: M2 (EVA MARS)',
       resEnergy: 'ENERGY',
       resLife: 'LIFE SUPPORT',
       resShield: 'SHIELD',
-      controlsHint: 'MOVE: [WASD / ARROWS] OR CLICK FLOOR  |  INTERACT WITH SERVER: [SPACE]',
+      controlsHint: 'MOVE: [WASD / ARROWS] OR CLICK FLOOR  |  INSPECT SERVER: [SPACE]',
       interactPrompt: '[SPACE]',
       statusNominal: '// STATUS: NOMINAL',
       statusAlert: '// STATUS: CAUTION - LOW RESOURCE',
@@ -41,11 +42,12 @@
       introSkip: 'PULAR >>',
       introNext: 'PRÓXIMO >',
       introFinish: 'INICIAR >>',
-      introSpeaker: (step, total) => `COPILOTO APOLLO // TRANSMISSÃO ${step}/${total}`,
+      introSpeaker: (step, total) => `COPILOTO APOLLO // INSTRUÇÃO ${step}/${total}`,
       introSlides: [
-        'Saudações, Cadete! Sou APOLLO, seu computador de bordo copiloto. A Terra precisa de comandantes treinados com dados reais da NASA.',
-        'MODO 1 (Estação Lunar): Vença as 3 crises reais para liberar o MODO 2 (Marte) e o traje EVA. [Juízes: usem PASSE JUIZ no topo para testar o Modo 2!]',
-        'Caminhe até os 3 servidores físicos—Reator, Bio-Estufa e Defesa—para equilibrar Energia, Suporte de Vida e Escudo. Vamos começar?'
+        'Saudações, Cadete! Sou APOLLO, seu copiloto de bordo. Você vai comandar uma base espacial usando dados reais da NASA.',
+        'SEU OBJETIVO: Sobreviver a 3 Turnos por fase sem deixar Energia, Suporte de Vida ou Escudo chegarem a 0%. Suas barras continuam de uma fase para a outra!',
+        'COMO JOGAR CADA TURNO: Caminhe até os 3 servidores (Reator, Bio-Estufa, Defesa), aperte [ESPAÇO] para comparar os efeitos e execute 1 protocolo por turno.',
+        'CAMPANHA: Vença as 3 fases lunares (Modo 1) para liberar Marte e o traje EVA (Modo 2) — ou use PASSE JUIZ no topo para testar Marte!'
       ],
       setupTitle: 'REGISTRO DE COMANDANTE',
       setupDesc: 'Personalize seu perfil antes de assumir o controle da estação.',
@@ -56,14 +58,14 @@
       avatarMale: 'COMANDANTE (M)',
       enterBtn: 'ENTRAR NA ESTAÇÃO >>',
       subtitleM1: '// MODO 1: ESTAÇÃO LUNAR',
-      subtitleM2: '// MODO 2: CRATERA JEZERO (MARTE)',
-      btnBriefing: 'DADOS NASA (BRIEF)',
+      subtitleM2: '// MODO 2: EXPEDIÇÃO MARTE',
+      btnBriefing: 'REGRAS E DADOS NASA',
       btnSuitM1: 'PASSE JUIZ: M1 (ESTAÇÃO)',
       btnSuitM2: 'PASSE JUIZ: M2 (EVA MARTE)',
       resEnergy: 'ENERGIA',
       resLife: 'SUPORTE DE VIDA',
       resShield: 'ESCUDO',
-      controlsHint: 'MOVER: [WASD / SETAS] OU CLIQUE NO PISO  |  INTERAGIR NO SERVIDOR: [ESPAÇO]',
+      controlsHint: 'MOVER: [WASD / SETAS] OU CLIQUE NO PISO  |  INSPECIONAR SERVIDOR: [ESPAÇO]',
       interactPrompt: '[ESPAÇO]',
       statusNominal: '// STATUS: NOMINAL',
       statusAlert: '// STATUS: ALERTA - RECURSO BAIXO',
@@ -88,7 +90,7 @@
     resources: {
       energy: 70,
       life: 70,
-      shield: 70
+      shield: 75
     },
     apolloTalkTicks: 0,
     player: {
@@ -138,19 +140,24 @@
   // =========================================================================
   // 3. TRANSIÇÃO RETRÔ & IDIOMA
   // =========================================================================
-  function transitionToScreen(hideId, showId, afterCallback) {
+  function fadeTransition(midCallback) {
     const fader = document.getElementById('screen-fader');
     fader.classList.add('active');
 
     setTimeout(() => {
-      if (hideId) document.getElementById(hideId).classList.add('hidden');
-      if (showId) document.getElementById(showId).classList.remove('hidden');
-      if (afterCallback) afterCallback();
-
+      if (midCallback) midCallback();
       requestAnimationFrame(() => {
         fader.classList.remove('active');
       });
     }, 460);
+  }
+
+  function transitionToScreen(hideId, showId, afterCallback) {
+    fadeTransition(() => {
+      if (hideId) document.getElementById(hideId).classList.add('hidden');
+      if (showId) document.getElementById(showId).classList.remove('hidden');
+      if (afterCallback) afterCallback();
+    });
   }
 
   function applyLanguage(newLang) {
@@ -220,7 +227,7 @@
       if (state.introCharIndex >= fullText.length) {
         clearInterval(state.introTypingTimer);
       }
-    }, 20);
+    }, 18);
   }
 
   function finishIntro() {
@@ -533,6 +540,13 @@
       state.mode === 1 ? dict.subtitleM1 : dict.subtitleM2;
   }
 
+  function resetPlayerPosition() {
+    state.player.x = 400;
+    state.player.y = 265;
+    state.player.targetX = 400;
+    state.player.targetY = 265;
+  }
+
   window.addEventListener('keydown', (e) => {
     if (state.screen !== 'station' || state.modalOpen) return;
     state.keys[e.key.toLowerCase()] = true;
@@ -557,7 +571,6 @@
     const clickX = (e.clientX - rect.left) * scaleX;
     const clickY = (e.clientY - rect.top) * scaleY;
 
-    // Se clicou diretamente em um servidor e já está perto dele, abre o modal
     for (const srv of servers) {
       const clickDistToSrv = Math.hypot(clickX - srv.x, clickY - srv.y);
       const playerDistToSrv = Math.hypot(state.player.x - srv.x, state.player.y - (srv.y + 35));
@@ -791,7 +804,7 @@
 
   document.getElementById('btn-open-briefing').addEventListener('click', () => {
     if (window.Simulation) {
-      window.Simulation.openBriefingModal(false);
+      window.Simulation.openBriefingModal(false, false);
     }
   });
 
@@ -812,7 +825,7 @@
   document.getElementById('btn-lang').addEventListener('click', toggleLang);
   document.getElementById('btn-lang-intro').addEventListener('click', toggleLang);
 
-  // Ponte pública para o Simulation Engine (Etapa 3)
+  // Ponte pública para o Simulation Engine
   window.GameBridge = {
     getLang: () => state.lang,
     getCommanderName: () => state.commanderName,
@@ -820,6 +833,8 @@
     getResources: () => ({ ...state.resources }),
     setAllResources,
     setMode,
+    resetPlayerPosition,
+    fadeTransition,
     setModalOpen: (isOpen) => {
       state.modalOpen = isOpen;
       state.keys = {};
