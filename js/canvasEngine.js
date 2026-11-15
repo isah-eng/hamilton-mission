@@ -7,6 +7,8 @@
       langBtn: 'LANG: EN',
       btnAudioOn: 'SFX: ON',
       btnAudioOff: 'SFX: OFF',
+      btnBgmOn: 'BGM: ON',
+      btnBgmOff: 'BGM: OFF',
       introSkip: 'SKIP >>',
       introNext: 'NEXT >',
       introFinish: 'START SETUP >>',
@@ -43,6 +45,8 @@
       langBtn: 'IDIOMA: PT',
       btnAudioOn: 'SOM: LIG',
       btnAudioOff: 'SOM: DESL',
+      btnBgmOn: 'MÚSICA: LIG',
+      btnBgmOff: 'MÚSICA: DESL',
       introSkip: 'PULAR >>',
       introNext: 'PRÓXIMO >',
       introFinish: 'INICIAR >>',
@@ -166,9 +170,12 @@
 
   function updateAudioButtonLabel() {
     const dict = I18N[state.lang];
-    const isMuted = window.AudioEngine ? window.AudioEngine.isMuted() : false;
+    const isSfxMuted = window.AudioEngine ? window.AudioEngine.isMuted() : false;
+    const isBgmMuted = window.AudioEngine ? window.AudioEngine.isBgmMuted() : false;
     document.getElementById('btn-toggle-audio').textContent =
-      isMuted ? dict.btnAudioOff : dict.btnAudioOn;
+    isSfxMuted ? dict.btnAudioOff : dict.btnAudioOn;
+    document.getElementById('btn-toggle-bgm').textContent =
+    isBgmMuted ? dict.btnBgmOff : dict.btnBgmOn;
   }
 
   function applyLanguage(newLang) {
@@ -842,6 +849,13 @@
   document.getElementById('btn-toggle-audio').addEventListener('click', () => {
     if (window.AudioEngine) {
       window.AudioEngine.toggleMute();
+      updateAudioButtonLabel();
+    }
+  });
+
+  document.getElementById('btn-toggle-bgm').addEventListener('click', () => {
+    if (window.AudioEngine) {
+      window.AudioEngine.toggleBgm();
       updateAudioButtonLabel();
     }
   });
