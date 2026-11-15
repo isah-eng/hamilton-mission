@@ -5,6 +5,8 @@
   const I18N = {
     en: {
       langBtn: 'LANG: EN',
+      btnAudioOn: 'SFX: ON',
+      btnAudioOff: 'SFX: OFF',
       introSkip: 'SKIP >>',
       introNext: 'NEXT >',
       introFinish: 'START SETUP >>',
@@ -39,6 +41,8 @@
     },
     pt: {
       langBtn: 'IDIOMA: PT',
+      btnAudioOn: 'SOM: LIG',
+      btnAudioOff: 'SOM: DESL',
       introSkip: 'PULAR >>',
       introNext: 'PRÓXIMO >',
       introFinish: 'INICIAR >>',
@@ -160,6 +164,13 @@
     });
   }
 
+  function updateAudioButtonLabel() {
+    const dict = I18N[state.lang];
+    const isMuted = window.AudioEngine ? window.AudioEngine.isMuted() : false;
+    document.getElementById('btn-toggle-audio').textContent =
+      isMuted ? dict.btnAudioOff : dict.btnAudioOn;
+  }
+
   function applyLanguage(newLang) {
     state.lang = newLang;
     const dict = I18N[state.lang];
@@ -181,6 +192,7 @@
       state.mode === 1 ? dict.btnSuitM1 : dict.btnSuitM2;
     document.getElementById('mission-subtitle').textContent =
       state.mode === 1 ? dict.subtitleM1 : dict.subtitleM2;
+    updateAudioButtonLabel();
 
     if (state.screen === 'intro') {
       startIntroSlide(state.introIndex);
@@ -224,6 +236,9 @@
     state.introTypingTimer = setInterval(() => {
       state.introCharIndex++;
       textEl.textContent = fullText.slice(0, state.introCharIndex);
+      if (state.introCharIndex % 4 === 0 && window.AudioEngine) {
+        window.AudioEngine.playBlip();
+      }
       if (state.introCharIndex >= fullText.length) {
         clearInterval(state.introTypingTimer);
       }
@@ -232,6 +247,7 @@
 
   function finishIntro() {
     clearInterval(state.introTypingTimer);
+    if (window.AudioEngine) window.AudioEngine.playClick();
     transitionToScreen('intro-overlay', 'setup-overlay', () => {
       state.screen = 'setup';
     });
@@ -774,6 +790,7 @@
     }
 
     if (state.introIndex < dict.introSlides.length - 1) {
+      if (window.AudioEngine) window.AudioEngine.playClick();
       startIntroSlide(state.introIndex + 1);
     } else {
       finishIntro();
@@ -784,6 +801,7 @@
 
   document.querySelectorAll('.gender-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
+      if (window.AudioEngine) window.AudioEngine.playClick();
       document.querySelectorAll('.gender-btn').forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
       state.gender = btn.dataset.gender;
@@ -791,6 +809,7 @@
   });
 
   document.getElementById('btn-start-station').addEventListener('click', () => {
+    if (window.AudioEngine) window.AudioEngine.playExecute();
     const inputName = document.getElementById('commander-name').value.trim();
     if (inputName) state.commanderName = inputName;
 
@@ -803,12 +822,14 @@
   });
 
   document.getElementById('btn-open-briefing').addEventListener('click', () => {
+    if (window.AudioEngine) window.AudioEngine.playOpen();
     if (window.Simulation) {
       window.Simulation.openBriefingModal(false, false);
     }
   });
 
   document.getElementById('btn-toggle-suit').addEventListener('click', () => {
+    if (window.AudioEngine) window.AudioEngine.playClick();
     state.judgePassActive = state.mode === 1;
     const targetMode = state.judgePassActive ? 2 : 1;
     setMode(targetMode);
@@ -818,7 +839,15 @@
     }
   });
 
+  document.getElementById('btn-toggle-audio').addEventListener('click', () => {
+    if (window.AudioEngine) {
+      window.AudioEngine.toggleMute();
+      updateAudioButtonLabel();
+    }
+  });
+
   function toggleLang() {
+    if (window.AudioEngine) window.AudioEngine.playClick();
     applyLanguage(state.lang === 'en' ? 'pt' : 'en');
   }
 
