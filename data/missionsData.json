@@ -5,14 +5,14 @@
       "mode": 1,
       "order": 1,
       "title": {
-        "en": "PHASE 01: LUNAR NIGHT & POWER RATIONING",
-        "pt": "FASE 01: NOITE LUNAR E RACIONAMENTO"
+        "en": "PHASE 01: APOLLO 13 & THE FREEZING NIGHT",
+        "pt": "FASE 01: APOLLO 13 E A NOITE CONGELANTE"
       },
       "historyRef": {
-        "en": "Inspired by Apollo 13 (1970) power-down survival protocol & NASA POWER Lunar Irradiance data.",
-        "pt": "Inspirado no protocolo de economia da Apollo 13 (1970) e nos dados de irradiância lunar NASA POWER."
+        "en": "WHAT REALLY HAPPENED (1970): After an oxygen tank exploded on Apollo 13, astronauts lost main electricity. To survive the trip home, NASA engineers made a tough trade-off: they shut down heaters and computers to save battery power—dropping cabin temperature to 3 C (38 F) so they would still have electricity to re-enter Earth's atmosphere.",
+        "pt": "O QUE ACONTECEU DE VERDADE (1970): Após a explosão de um tanque na Apollo 13, a nave ficou sem energia principal. Para sobreviver, a NASA fez um trade-off difícil: desligou aquecedores e computadores para poupar bateria—deixando a cabine a 3 C para garantir eletricidade na volta à Terra."
       },
-      "source": "NASA POWER & LRO Solar Irradiance Dataset",
+      "source": "NASA Apollo 13 Flight Journal & LRO Solar Irradiance Dataset",
       "telemetryLabel": {
         "en": "Solar Irradiance",
         "pt": "Irradiância Solar"
@@ -40,8 +40,8 @@
             "pt": "Pôr do sol no Polo Sul Lunar: a irradiância solar caiu de 1.361 W/m2 para 180 W/m2."
           },
           "apolloPrompt": {
-            "en": "Commander, solar generation just dropped by 87%! Visit the REACTOR to ration non-essential power before batteries drain.",
-            "pt": "Comandante, a geração solar caiu 87%! Vá ao REATOR para racionar energia antes que as baterias esvaziem."
+            "en": "Solar generation dropped 87%! Check the 3 servers—rationing power at the REACTOR saves Energy, but cools down Life Support.",
+            "pt": "A geração solar caiu 87%! Compare os 3 servidores—racionar no REATOR salva Energia, mas esfria o Suporte de Vida."
           },
           "environmentDrain": { "energy": -18, "life": -5, "shield": 0 },
           "actions": [
@@ -88,8 +88,8 @@
             "pt": "Sombra Lunar Total: 0 W/m2 de luz solar. A temperatura externa está caindo rumo a -173 C."
           },
           "apolloPrompt": {
-            "en": "Zero solar power and freezing cold! Head to the BIO-DOME to insulate life support without blacking out the station.",
-            "pt": "Energia solar zerada e frio extremo! Vá até a BIO-ESTUFA para isolar o suporte de vida sem causar apagão."
+            "en": "Zero sunlight and freezing cold! Inspect BIO-DOME and REACTOR to keep both oxygen and batteries alive.",
+            "pt": "Zero luz solar e frio extremo! Compare BIO-ESTUFA e REATOR para manter oxigênio e baterias vivos."
           },
           "environmentDrain": { "energy": -15, "life": -20, "shield": -5 },
           "actions": [
@@ -136,8 +136,8 @@
             "pt": "Primeiro Brilho do Amanhecer: 45 W/m2 na borda da cratera. Baterias no limite antes da recarga."
           },
           "apolloPrompt": {
-            "en": "Final stretch before sunrise! Balance your lowest bar at the REACTOR or BIO-DOME to complete the shift safely.",
-            "pt": "Reta final antes do amanhecer! Equilibre sua barra mais baixa no REATOR ou BIO-ESTUFA para fechar o turno."
+            "en": "Final turn before sunrise! Remember: your remaining bars carry over to Phase 02, so boost your weakest system!",
+            "pt": "Último turno antes do amanhecer! Lembre-se: suas barras continuam na Fase 02, então reforce o sistema mais fraco!"
           },
           "environmentDrain": { "energy": -12, "life": -12, "shield": -5 },
           "actions": [
@@ -171,14 +171,14 @@
       "mode": 1,
       "order": 2,
       "title": {
-        "en": "PHASE 02: SKYLAB THERMAL PEAK",
-        "pt": "FASE 02: PICO TÉRMICO SKYLAB"
+        "en": "PHASE 02: SKYLAB'S MELTING HULL",
+        "pt": "FASE 02: O CASCO SUPERAQUECIDO DA SKYLAB"
       },
       "historyRef": {
-        "en": "Inspired by Skylab's 1973 parasol sunshield rescue & LRO Diviner lunar surface temperature peaks.",
-        "pt": "Inspirado no resgate térmico da estação Skylab (1973) e nos dados térmicos do sensor LRO Diviner."
+        "en": "WHAT REALLY HAPPENED (1973): During launch, the Skylab space station lost its sunshield and one solar wing. Inside, temperatures soared past 52 C (126 F), threatening to ruin food and release toxic gases. Astronauts performed a daring spacewalk to deploy a gold-foil 'parasol' sunshade—cooling the station at the trade-off of blocking part of their sunlight.",
+        "pt": "O QUE ACONTECEU DE VERDADE (1973): No lançamento, a estação espacial Skylab perdeu seu escudo térmico e um painel solar. Lá dentro, o calor passou de 52 C, ameaçando estragar a comida e liberar gases tóxicos. Os astronautas abriram um 'guarda-sol' dourado no espaço—esfriando a nave com o trade-off de bloquear parte da luz solar."
       },
-      "source": "NASA LRO Diviner Lunar Radiometer Experiment",
+      "source": "NASA Skylab Mission Archive & LRO Diviner Radiometer",
       "telemetryLabel": {
         "en": "Surface Thermal Load",
         "pt": "Carga Térmica da Superfície"
@@ -206,8 +206,8 @@
             "pt": "O sensor LRO Diviner registra 375 K (+102 C) no solo lunar. O calor está irradiando para o casco."
           },
           "apolloPrompt": {
-            "en": "Hull temperature rising fast! Use DEFENSE to deploy a reflective sunshade like Skylab's crew did.",
-            "pt": "Temperatura do casco subindo rápido! Vá à DEFESA para abrir um para-sol refletivo como na missão Skylab."
+            "en": "Hull temperature rising fast! Deploying the sunshade at DEFENSE protects the Shield, but slightly lowers solar Energy.",
+            "pt": "Temperatura do casco subindo rápido! Abrir o para-sol na DEFESA protege o Escudo, mas reduz um pouco a Energia."
           },
           "environmentDrain": { "energy": 5, "life": -10, "shield": -20 },
           "actions": [
@@ -254,8 +254,8 @@
             "pt": "Pico do Meio-Dia Lunar: 392 K (+119 C). O estresse térmico ameaça as vedações de ar e eletrônicos."
           },
           "apolloPrompt": {
-            "en": "Peak lunar heat! Check whether LIFE SUPPORT or SHIELD needs urgent cooling at BIO-DOME or DEFENSE.",
-            "pt": "Calor lunar máximo! Veja se SUPORTE DE VIDA ou ESCUDO precisa de resfriamento na BIO-ESTUFA ou DEFESA."
+            "en": "Peak lunar heat! Both Life Support and Shield take -18% drain—compare all 3 servers carefully.",
+            "pt": "Calor lunar máximo! Suporte de Vida e Escudo perdem -18%—compare os 3 servidores com cuidado."
           },
           "environmentDrain": { "energy": 0, "life": -18, "shield": -18 },
           "actions": [
@@ -298,8 +298,8 @@
             "pt": "Resfriamento Vespertino: 360 K. Carga térmica diminuindo, mas reservas precisam fechar positivas."
           },
           "apolloPrompt": {
-            "en": "Heat wave subsiding! Reinforce your lowest system to earn the Skylab Engineering Medal.",
-            "pt": "Onda de calor cedendo! Reforce seu sistema mais baixo para conquistar a Medalha Skylab."
+            "en": "Heat wave subsiding! Reinforce your lowest bar before the Solar Storm in Phase 03 hits!",
+            "pt": "Onda de calor cedendo! Reforce sua barra mais baixa antes que a Tempestade Solar da Fase 03 comece!"
           },
           "environmentDrain": { "energy": -10, "life": -10, "shield": -10 },
           "actions": [
@@ -333,14 +333,14 @@
       "mode": 1,
       "order": 3,
       "title": {
-        "en": "PHASE 03: SOLAR RADIATION STORM",
-        "pt": "FASE 03: TEMPESTADE DE RADIAÇÃO SOLAR"
+        "en": "PHASE 03: THE 1972 SOLAR STORM",
+        "pt": "FASE 03: A TEMPESTADE SOLAR DE 1972"
       },
       "historyRef": {
-        "en": "Real NASA DONKI Coronal Mass Ejection (CME) event paired with LRO/CRaTER lunar radiation & OSDR bio-dome data.",
-        "pt": "Ejeção de Massa Coronal (CME) real do catálogo NASA DONKI combinada com dados CRaTER e OSDR."
+        "en": "WHAT REALLY HAPPENED (AUGUST 1972): Between Apollo 16 and Apollo 17, the Sun unleashed a massive Coronal Mass Ejection (CME). Because the Moon has no magnetic field, astronauts on the lunar surface would have absorbed lethal radiation. NASA's Artemis program now uses water walls and storm shelters—trading cabin space and power to keep crews safe.",
+        "pt": "O QUE ACONTECEU DE VERDADE (AGOSTO DE 1972): Entre as missões Apollo 16 e 17, o Sol disparou uma tempestade solar gigantesca. Como a Lua não tem campo magnético, astronautas na superfície sofreriam radiação letal. Hoje o programa Artemis da NASA usa abrigos e paredes de água—sacrificando energia e espaço para proteger a tripulação."
       },
-      "source": "NASA DONKI (CME) + LRO/CRaTER + NASA OSDR",
+      "source": "NASA DONKI Space Weather + LRO/CRaTER + NASA OSDR",
       "telemetryLabel": {
         "en": "Solar Proton Flux",
         "pt": "Fluxo de Prótons Solares"
@@ -368,8 +368,8 @@
             "pt": "Alerta DONKI: Erupção solar classe X lançou uma CME a 1.350 km/s. Fluxo de prótons atingiu 420 pfu na Lua."
           },
           "apolloPrompt": {
-            "en": "The Moon has no magnetic field! Move to DEFENSE to energize our magnetic shield before the storm peaks.",
-            "pt": "A Lua não tem campo magnético! Vá à DEFESA para energizar o escudo magnético antes do pico da tempestade."
+            "en": "Radiation storm incoming! Polarizing the Shield at DEFENSE costs Energy, but stops the -22% Shield hit.",
+            "pt": "Tempestade de radiação chegando! Polarizar o Escudo na DEFESA gasta Energia, mas segura o dano de -22%."
           },
           "environmentDrain": { "energy": -10, "life": -5, "shield": -22 },
           "actions": [
@@ -416,8 +416,8 @@
             "pt": "Leitura Máxima CRaTER: 1.850 pfu! Tempestade severa de radiação atingindo a órbita lunar."
           },
           "apolloPrompt": {
-            "en": "Maximum radiation! Sacrifice Bio-Dome lighting at the REACTOR or reinforce DEFENSE to survive the shockwave!",
-            "pt": "Radiação máxima! Sacrifique a luz da Bio-Estufa no REATOR ou reforce a DEFESA para suportar a onda de choque!"
+            "en": "Peak radiation! At REACTOR you can sacrifice greenhouse lights to boost both Energy and Shield—check the net preview!",
+            "pt": "Radiação máxima! No REATOR você pode sacrificar luz da estufa para subir Energia e Escudo—veja a prévia!"
           },
           "environmentDrain": { "energy": -10, "life": -12, "shield": -25 },
           "actions": [
@@ -499,8 +499,8 @@
         "pt": "MODO 2: EXPEDIÇÃO MARTE (COMANDO AUTÔNOMO)"
       },
       "historyRef": {
-        "en": "Combines Perseverance MEDA dust opacity, Curiosity RAD radiation, MOXIE oxygen production & live NASA DONKI space weather.",
-        "pt": "Combina opacidade de poeira MEDA (Perseverance), radiação RAD (Curiosity), oxigênio MOXIE e clima espacial NASA DONKI."
+        "en": "WHAT REALLY HAPPENS ON MARS (20-MIN SIGNAL DELAY): Radio signals between Earth and Mars take up to 20 minutes each way (40 minutes round-trip). Because Mission Control cannot help in real time during an emergency, APOLLO activates Autonomous Mode—just like NASA's Perseverance rover, you must read raw MEDA dust, RAD radiation, and MOXIE oxygen telemetry on your own to survive!",
+        "pt": "O QUE ACONTECE DE VERDADE EM MARTE (ATRASO DE SINAL DE 20 MIN): Sinais de rádio entre a Terra e Marte levam até 20 minutos para ir e mais 20 para voltar. Como o Controle da Missão não consegue ajudar em tempo real numa emergência, o robô APOLLO ativa o Modo Autônomo—assim como o rover Perseverance da NASA, você precisa interpretar os dados brutos dos sensores MEDA, RAD e MOXIE sozinho para sobreviver!"
       },
       "source": "NASA Perseverance MEDA + Curiosity RAD + MOXIE + DONKI",
       "telemetryLabel": {
@@ -549,11 +549,11 @@
           "nasaInsight": {
             "en": "MEDA Sensor: Martian dust optical depth jumped to 2.4 tau, blocking 65% of sunlight on solar arrays.",
             "pt": "Sensor MEDA: Opacidade da poeira marciana subiu para 2.4 tau, bloqueando 65% da luz nos painéis solares."
-          },
-          "apolloPrompt": {
-            "en": "RAW TELEMETRY ONLY: Atmospheric optical depth 2.4 tau; photovoltaic input down 65%. Autonomous command active.",
-            "pt": "APENAS TELEMETRIA BRUTA: Profundidade óptica 2.4 tau; entrada fotovoltaica caiu 65%. Comando autônomo ativo."
-          },
+        },
+        "apolloPrompt": {
+        "en": "EARTH LINK DELAYED (20 MIN) — RAW TELEMETRY ONLY: Atmospheric optical depth 2.4 tau; photovoltaic input down 65%. Diagnose which system needs priority.",
+        "pt": "SINAL COM A TERRA ATRASADO (20 MIN) — APENAS TELEMETRIA BRUTA: Profundidade óptica 2.4 tau; entrada fotovoltaica caiu 65%. Diagnostique qual sistema precisa de prioridade."
+        },
           "environmentDrain": { "energy": -22, "life": -10, "shield": -5 },
           "actions": [
             {
@@ -599,9 +599,9 @@
             "en": "Archive Solar Event (2024-05-10): 1,450 km/s CME hitting Mars thin atmosphere. RAD radiation spiking!",
             "pt": "Evento Solar Histórico (10/05/2024): CME a 1.450 km/s atingindo a atmosfera fina de Marte. Radiação RAD subindo!"
           },
-          "apolloPrompt": {
-            "en": "RAW TELEMETRY ONLY: High-speed CME shockwave impacting thin Martian atmosphere; Curiosity RAD dose rate spiking.",
-            "pt": "APENAS TELEMETRIA BRUTA: Onda de choque CME atingindo atmosfera fina de Marte; taxa de radiação RAD em pico."
+            "apolloPrompt": {
+            "en": "EARTH LINK DELAYED (20 MIN) — RAW TELEMETRY ONLY: High-speed CME shockwave impacting thin Martian atmosphere; Curiosity RAD dose rate spiking.",
+            "pt": "SINAL COM A TERRA ATRASADO (20 MIN) — APENAS TELEMETRIA BRUTA: Onda de choque CME atingindo atmosfera fina de Marte; taxa de radiação RAD em pico."
           },
           "environmentDrain": { "energy": -10, "life": -12, "shield": -24 },
           "actions": [
@@ -649,8 +649,8 @@
             "pt": "Poeira baixando para 0.9 tau e radiação cedendo. Último sol antes da janela de reabastecimento."
           },
           "apolloPrompt": {
-            "en": "RAW TELEMETRY ONLY: Dust opacity 0.9 tau; radiation subsiding. Final sol before orbital resupply window.",
-            "pt": "APENAS TELEMETRIA BRUTA: Opacidade 0.9 tau; radiação cedendo. Último sol antes da janela orbital."
+            "en": "EARTH LINK DELAYED (20 MIN) — RAW TELEMETRY ONLY: Dust opacity 0.9 tau; radiation subsiding. Final sol before orbital resupply window.",
+            "pt": "SINAL COM A TERRA ATRASADO (20 MIN) — APENAS TELEMETRIA BRUTA: Opacidade 0.9 tau; radiação cedendo. Último sol antes da janela orbital."
           },
           "environmentDrain": { "energy": -12, "life": -14, "shield": -12 },
           "actions": [

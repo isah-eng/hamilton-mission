@@ -1,6 +1,6 @@
 (() => {
   // =========================================================================
-  // MOTOR DE SIMULAÇÃO & SISTEMAS ACOPLADOS (ETAPA 3 REFINADA)
+  // MOTOR DE SIMULAÇÃO & SISTEMAS ACOPLADOS
   // =========================================================================
   const sim = {
     missions: [],
@@ -9,7 +9,6 @@
     selectedLandingSite: 'jezero',
     phaseBaseStats: { energy: 70, life: 70, shield: 75 },
     pendingCascade: null,
-    turnHistory: [],
     activeModal: null
   };
 
@@ -17,10 +16,13 @@
     en: {
       turnWord: 'TURN',
       solWord: 'SOL',
-      autonomousTag: '[AUTONOMOUS COMMAND // NO HINTS] ',
-      objectiveTitle: 'SHIFT OBJECTIVE & HOW TO PLAY',
+      autonomousTag: '[EARTH SIGNAL DELAY: ~20 MIN // AUTONOMOUS MODE] ',
+      nasaArchiveHeader: 'REAL NASA MISSION ARCHIVE',
+      objectiveTitle: 'SHIFT OBJECTIVE & TRADE-OFF RULE',
       objectiveBody:
-        'Survive 3 turns without letting any bar reach 0%. Walk to all 3 servers (Reactor, Bio-Dome, Defense) and press [SPACE] to compare trade-offs before executing 1 protocol per turn.',
+     'Both the NASA Space Hazard and your Protocol apply together each turn. Inspect all 3 servers before choosing—your bars carry over to the next phase, and hitting 0% restarts from Phase 01!',
+      objectiveBodyMars:
+     '20-MIN COMMUNICATION DELAY: Earth cannot send real-time advice, so APOLLO disables guided hints! Your objective: interpret the raw NASA sensor values yourself, compare all 3 servers, and survive 3 Sols without letting any bar hit 0%.',
       carriedStatsTitle: 'CARRIED-OVER RESERVES FROM PREVIOUS PHASE:',
       initialStatsTitle: 'INITIAL STATION RESERVES:',
       nasaSourceLabel: 'NASA TELEMETRY SOURCE',
@@ -32,15 +34,16 @@
         greenhouse: 'SERVER 02 // BIO-DOME LIFE SUPPORT',
         console: 'SERVER 03 // DEFENSE & NASA TELEMETRY'
       },
-      envHazardTitle: 'THIS TURN NASA ENVIRONMENT IMPACT:',
-      actionEffectTitle: 'SERVER PROTOCOL TRADE-OFF:',
+      envHazardTitle: '1. NASA SPACE HAZARD (APPLIES THIS TURN):',
+      actionEffectTitle: '2. YOUR PROTOCOL TRADE-OFF (APPLIES THIS TURN):',
+      netResultTitle: '3. PROJECTED BAR RESULT (CURRENT + HAZARD + PROTOCOL):',
       cascadePrefix: 'NEXT TURN CASCADE EFFECT:',
       executeBtn: 'EXECUTE PROTOCOL >>',
       walkOtherBtn: 'INSPECT OTHER SERVERS',
-      rewindTitle: 'CRITICAL SYSTEM FAILURE!',
-      rewindBody: (name, resName) =>
-        `Commander ${name}, ${resName} dropped to 0%. In space engineering, cascading trade-offs require rebalancing earlier priorities.`,
-      rewindBtn: '<< REWIND TELEMETRY (1 TURN)',
+      gameOverTitle: 'STATION COLLAPSE // MISSION FAILED!',
+      gameOverBody: (name, resName) =>
+        `Commander ${name}, ${resName} dropped to 0% and life-critical systems shut down. In space engineering, reserves must be balanced across every phase—try again from Phase 01!`,
+      restartGameBtn: '<< RESTART CAMPAIGN FROM PHASE 01',
       debriefTitle: 'SHIFT COMPLETED!',
       medalEarnedLabel: 'DECORATION EARNED',
       rankDistinction: 'GRADE: FLIGHT DIRECTOR DISTINCTION (ALL >= 40%)',
@@ -64,10 +67,13 @@
     pt: {
       turnWord: 'TURNO',
       solWord: 'SOL',
-      autonomousTag: '[COMANDO AUTÔNOMO // SEM DICAS] ',
-      objectiveTitle: 'OBJETIVO DA FASE E COMO JOGAR',
+      autonomousTag: '[ATRASO DE SINAL TERRA-MARTE: ~20 MIN // MODO AUTÔNOMO] ',
+      nasaArchiveHeader: 'ARQUIVO REAL DE MISSÃO NASA',
+      objectiveTitle: 'OBJETIVO DA FASE E REGRA DE TRADE-OFF',
       objectiveBody:
-        'Sobreviva a 3 turnos sem deixar nenhuma barra chegar a 0%. Caminhe até os 3 servidores (Reator, Bio-Estufa, Defesa) e aperte [ESPAÇO] para comparar os efeitos antes de executar 1 protocolo por turno.',
+     'O Impacto Ambiental da NASA e o seu Protocolo são somados juntos a cada turno. Visite os 3 servidores antes de decidir—suas barras continuam na próxima fase e zerar qualquer barra reinicia o jogo da Fase 01!',
+      objectiveBodyMars:
+     'ATRASO DE COMUNICAÇÃO DE 20 MIN: A Terra não consegue enviar ajuda em tempo real, por isso o APOLLO desativa as dicas guiadas! Seu objetivo: interpretar os sensores brutos da NASA sozinho, comparar os 3 servidores e sobreviver a 3 Sóis sem zerar nenhuma barra.',
       carriedStatsTitle: 'RESERVAS HERDADAS DA FASE ANTERIOR:',
       initialStatsTitle: 'RESERVAS INICIAIS DA ESTAÇÃO:',
       nasaSourceLabel: 'FONTE DE TELEMETRIA NASA',
@@ -79,15 +85,16 @@
         greenhouse: 'SERVIDOR 02 // BIO-ESTUFA (SUPORTE DE VIDA)',
         console: 'SERVIDOR 03 // DEFESA & TELEMETRIA NASA'
       },
-      envHazardTitle: 'IMPACTO AMBIENTAL DA NASA NESTE TURNO:',
-      actionEffectTitle: 'TRADE-OFF DESTE PROTOCOLO:',
+      envHazardTitle: '1. IMPACTO AMBIENTAL DA NASA (APLICA NESTE TURNO):',
+      actionEffectTitle: '2. TRADE-OFF DO SEU PROTOCOLO (APLICA NESTE TURNO):',
+      netResultTitle: '3. PREVISÃO FINAL DAS BARRAS (ATUAL + NASA + PROTOCOLO):',
       cascadePrefix: 'EFEITO DOMINÓ NO PRÓXIMO TURNO:',
       executeBtn: 'EXECUTAR PROTOCOLO >>',
       walkOtherBtn: 'VER OUTROS SERVIDORES',
-      rewindTitle: 'FALHA CRÍTICA DE SISTEMA!',
-      rewindBody: (name, resName) =>
-        `Comandante ${name}, ${resName} chegou a 0%. Na engenharia espacial, efeitos em cascata exigem reequilibrar prioridades anteriores.`,
-      rewindBtn: '<< REBOBINAR TELEMETRIA (1 TURNO)',
+      gameOverTitle: 'COLAPSO DA ESTAÇÃO // FIM DE JOGO!',
+      gameOverBody: (name, resName) =>
+        `Comandante ${name}, ${resName} chegou a 0% e os sistemas vitais desligaram. Na engenharia espacial, as reservas precisam ser equilibradas em todas as fases—tente novamente desde a Fase 01!`,
+      restartGameBtn: '<< REINICIAR JOGO DESDE A FASE 01',
       debriefTitle: 'MISSÃO CONCLUÍDA!',
       medalEarnedLabel: 'CONDECORAÇÃO CONQUISTADA',
       rankDistinction: 'GRAU: DISTINÇÃO DE DIRETOR DE VOO (TUDO >= 40%)',
@@ -146,6 +153,38 @@
       .join('');
   }
 
+  // Calcula exatamente como ficarão as 3 barras se o jogador executar esta ação
+  function computeProjectedStats(currentStats, turn, action) {
+    const projected = { ...currentStats };
+
+    if (sim.pendingCascade) {
+      projected[sim.pendingCascade.target] += sim.pendingCascade.delta;
+    }
+
+    ['energy', 'life', 'shield'].forEach((k) => {
+      projected[k] += (turn.environmentDrain[k] || 0) + (action.immediate[k] || 0);
+      projected[k] = Math.max(0, Math.min(100, Math.round(projected[k])));
+    });
+
+    return projected;
+  }
+
+  function formatProjectedPills(currentStats, projectedStats, lang) {
+    const labels = UI_STRINGS[lang].resLabels;
+    return ['energy', 'life', 'shield']
+      .map((k) => {
+        const before = currentStats[k];
+        const after = projectedStats[k];
+        const diff = after - before;
+        const sign = diff > 0 ? '+' : '';
+        const isDanger = after <= 20;
+        const cls = isDanger ? 'neg' : diff >= 0 ? 'pos' : '';
+        const alertTag = after === 0 ? ' [0% FAIL!]' : '';
+        return `<span class="stat-pill ${cls}">${labels[k]}: ${before}% -> ${after}% (${sign}${diff}%)${alertTag}</span>`;
+      })
+      .join('');
+  }
+
   function computeEffectiveMarsStats(mission) {
     const stats = { ...sim.phaseBaseStats };
     if (mission.mode === 2 && Array.isArray(mission.landingSites)) {
@@ -200,7 +239,7 @@
   }
 
   // =========================================================================
-  // MODAL 1: BRIEFING DA FASE (OBJETIVOS + RESERVAS + POUSO EM MARTE)
+  // MODAL 1: BRIEFING DA FASE (HISTÓRIA REAL DA NASA + OBJETIVOS + RESERVAS)
   // =========================================================================
   function openBriefingModal(isNewMissionStart = true, isCarriedOver = false) {
     const mission = getMission();
@@ -244,12 +283,15 @@
         <span class="badge-nasa">MODE ${mission.mode}</span>
       </div>
 
-      <div class="objective-box">
-        <small>${dict.objectiveTitle}</small>
-        <p>${dict.objectiveBody}</p>
+      <div class="history-story-box">
+        <small>${dict.nasaArchiveHeader}</small>
+        <p>${mission.historyRef[lang]}</p>
       </div>
 
-      <p class="modal-body-text">${mission.historyRef[lang]}</p>
+      <div class="objective-box">
+        <small>${dict.objectiveTitle}</small>
+        <p>${mission.mode === 2 ? dict.objectiveBodyMars : dict.objectiveBody}</p>
+      </div>
 
       <div class="nasa-source-box">
         <small>${dict.nasaSourceLabel}</small>
@@ -278,7 +320,6 @@
         btn.classList.add('selected');
         sim.selectedLandingSite = btn.dataset.site;
 
-        // Atualiza ao vivo a prévia das barras conforme a zona de pouso escolhida
         const updatedPreview = computeEffectiveMarsStats(mission);
         const previewContainer = document.getElementById('briefing-res-preview');
         if (previewContainer) {
@@ -299,7 +340,7 @@
   }
 
   // =========================================================================
-  // MODAL 2: INTERAÇÃO COM UM DOS 3 SERVIDORES FÍSICOS
+  // MODAL 2: INTERAÇÃO COM SERVIDOR + PREVISÃO LÍQUIDA ANTES -> DEPOIS
   // =========================================================================
   function openServerModal(serverId) {
     const mission = getMission();
@@ -310,6 +351,9 @@
     const dict = UI_STRINGS[lang];
     const action = turn.actions.find((a) => a.server === serverId);
     if (!action) return;
+
+    const currentStats = window.GameBridge.getResources();
+    const projectedStats = computeProjectedStats(currentStats, turn, action);
 
     const cascadeHtml = action.cascade
       ? `<div class="cascade-warning">
@@ -338,6 +382,11 @@
         ${cascadeHtml}
       </div>
 
+      <div class="result-preview">
+        <div class="result-preview-title">${dict.netResultTitle}</div>
+        <div class="stat-pills">${formatProjectedPills(currentStats, projectedStats, lang)}</div>
+      </div>
+
       <div class="modal-actions">
         <button id="btn-close-server" class="btn-pixel btn-secondary">${dict.walkOtherBtn}</button>
         <button id="btn-exec-action" class="btn-pixel btn-primary">${dict.executeBtn}</button>
@@ -353,7 +402,7 @@
   }
 
   // =========================================================================
-  // LÓGICA DE RESOLUÇÃO DO TURNO (SISTEMAS ACOPLADOS)
+  // LÓGICA DE RESOLUÇÃO DO TURNO
   // =========================================================================
   function executeTurnDecision(action) {
     const mission = getMission();
@@ -362,13 +411,6 @@
     const dict = UI_STRINGS[lang];
 
     const currentStats = window.GameBridge.getResources();
-
-    sim.turnHistory.push({
-      turnIndex: sim.turnIndex,
-      stats: { ...currentStats },
-      pendingCascade: sim.pendingCascade ? { ...sim.pendingCascade } : null
-    });
-
     const nextStats = { ...currentStats };
     let cascadeNote = '';
 
@@ -389,7 +431,7 @@
     nextStats.life += turn.environmentDrain.life || 0;
     nextStats.shield += turn.environmentDrain.shield || 0;
 
-    // 3. Impacto imediato da decisão do jogador
+    // 3. Impacto imediato do protocolo escolhido
     nextStats.energy += action.immediate.energy || 0;
     nextStats.life += action.immediate.life || 0;
     nextStats.shield += action.immediate.shield || 0;
@@ -404,7 +446,7 @@
     const failedKey = ['energy', 'life', 'shield'].find((k) => updatedStats[k] <= 0);
 
     if (failedKey) {
-      openRewindModal(failedKey);
+      openGameOverModal(failedKey);
       return;
     }
 
@@ -417,9 +459,9 @@
   }
 
   // =========================================================================
-  // MODAL 3: REBOBINAR TELEMETRIA (QUANDO UM RECURSO CHEGA A 0%)
+  // MODAL 3: GAME OVER -> REINICIAR O JOGO DESDE A FASE 01
   // =========================================================================
-  function openRewindModal(failedKey) {
+  function openGameOverModal(failedKey) {
     const lang = window.GameBridge.getLang();
     const dict = UI_STRINGS[lang];
     const commander = window.GameBridge.getCommanderName();
@@ -427,26 +469,19 @@
 
     const html = `
       <div class="modal-header">
-        <h2 style="color: #ef4444;">${dict.rewindTitle}</h2>
-        <span class="badge-nasa">TELEMETRY ALERT</span>
+        <h2 style="color: #ef4444;">${dict.gameOverTitle}</h2>
+        <span class="badge-nasa">SYSTEM OFFLINE</span>
       </div>
-      <p class="modal-body-text">${dict.rewindBody(commander, resName)}</p>
+      <p class="modal-body-text">${dict.gameOverBody(commander, resName)}</p>
       <div class="modal-actions">
-        <button id="btn-rewind-turn" class="btn-pixel btn-primary">${dict.rewindBtn}</button>
+        <button id="btn-restart-campaign" class="btn-pixel btn-primary">${dict.restartGameBtn}</button>
       </div>
     `;
 
-    openModal(html, { type: 'rewind', failedKey });
+    openModal(html, { type: 'gameover', failedKey });
 
-    document.getElementById('btn-rewind-turn').addEventListener('click', () => {
-      const snapshot = sim.turnHistory.pop();
-      if (snapshot) {
-        sim.turnIndex = snapshot.turnIndex;
-        sim.pendingCascade = snapshot.pendingCascade;
-        window.GameBridge.setAllResources(snapshot.stats);
-      }
-      closeModal();
-      syncTelemetryUI();
+    document.getElementById('btn-restart-campaign').addEventListener('click', () => {
+      loadMissionByIndex(0, { useFade: true, preserveStats: false });
     });
   }
 
@@ -523,10 +558,8 @@
 
     document.getElementById('btn-next-mission').addEventListener('click', () => {
       if (isFinalMars) {
-        // Reinicia a campanha inteira do zero com fade
         loadMissionByIndex(0, { useFade: true, preserveStats: false });
       } else {
-        // Avança para a próxima fase mantendo exatamente onde as barras pararam!
         loadMissionByIndex(sim.currentMissionIndex + 1, { useFade: true, preserveStats: true });
       }
     });
@@ -545,7 +578,6 @@
       sim.currentMissionIndex = Math.max(0, Math.min(sim.missions.length - 1, index));
       sim.turnIndex = 0;
       sim.pendingCascade = null;
-      sim.turnHistory = [];
 
       const mission = getMission();
       window.GameBridge.setMode(mission.mode);
@@ -615,8 +647,8 @@
         openBriefingModal(sim.activeModal.isNewMissionStart, sim.activeModal.isCarriedOver);
       } else if (sim.activeModal.type === 'server') {
         openServerModal(sim.activeModal.serverId);
-      } else if (sim.activeModal.type === 'rewind') {
-        openRewindModal(sim.activeModal.failedKey);
+      } else if (sim.activeModal.type === 'gameover') {
+        openGameOverModal(sim.activeModal.failedKey);
       } else if (sim.activeModal.type === 'debrief') {
         openDebriefModal();
       }

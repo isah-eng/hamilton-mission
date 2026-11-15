@@ -10,10 +10,10 @@
       introFinish: 'START SETUP >>',
       introSpeaker: (step, total) => `APOLLO COPILOT // BRIEFING ${step}/${total}`,
       introSlides: [
-        'Greetings, Cadet! I am APOLLO, your onboard AI copilot. You are taking command of a space habitat powered by real NASA telemetry.',
-        'YOUR OBJECTIVE: Survive 3 Turns per phase without letting Energy, Life Support, or Shield drop to 0%. Your remaining bars carry over to the next phase!',
-        'HOW TO PLAY EACH TURN: Walk to the 3 servers (Reactor, Bio-Dome, Defense), press [SPACE] to compare their trade-offs, and execute 1 protocol per turn.',
-        'CAMPAIGN: Clear all 3 Lunar phases (Mode 1) to unlock Mars & the EVA suit (Mode 2) — or use JUDGE PASS at the top to test Mars anytime!'
+        'Greetings, Cadet! I am APOLLO, your onboard AI copilot. You will command a space station facing real crises recorded by NASA.',
+        'WHAT IS A TRADE-OFF? In space, power and supplies are limited—every fix has a price. Boosting your Shield might drain your Battery or cool down the Bio-Dome!',
+        'HOW TO PLAY: Each turn, a NASA space hazard drains your bars. Walk to all 3 servers (Reactor, Bio-Dome, Defense) and press [SPACE] to compare protocols and see the exact math before choosing.',
+        'HIGH STAKES: Your bars carry over between phases! If Energy, Life Support, or Shield hits 0%, the mission fails and restarts from Phase 01. Clear all 3 Lunar phases to unlock Mars!'
       ],
       setupTitle: 'COMMANDER REGISTRATION',
       setupDesc: 'Customize your profile before taking command of the station.',
@@ -44,10 +44,10 @@
       introFinish: 'INICIAR >>',
       introSpeaker: (step, total) => `COPILOTO APOLLO // INSTRUÇÃO ${step}/${total}`,
       introSlides: [
-        'Saudações, Cadete! Sou APOLLO, seu copiloto de bordo. Você vai comandar uma base espacial usando dados reais da NASA.',
-        'SEU OBJETIVO: Sobreviver a 3 Turnos por fase sem deixar Energia, Suporte de Vida ou Escudo chegarem a 0%. Suas barras continuam de uma fase para a outra!',
-        'COMO JOGAR CADA TURNO: Caminhe até os 3 servidores (Reator, Bio-Estufa, Defesa), aperte [ESPAÇO] para comparar os efeitos e execute 1 protocolo por turno.',
-        'CAMPANHA: Vença as 3 fases lunares (Modo 1) para liberar Marte e o traje EVA (Modo 2) — ou use PASSE JUIZ no topo para testar Marte!'
+        'Saudações, Cadete! Sou APOLLO, seu copiloto de bordo. Você vai comandar uma estação espacial enfrentando crises reais registradas pela NASA.',
+        'O QUE É UM TRADE-OFF? No espaço, energia e suprimentos são limitados—toda solução tem um custo. Reforçar o Escudo pode gastar Bateria ou esfriar a Bio-Estufa!',
+        'COMO JOGAR: A cada turno, um evento da NASA drena suas barras. Vá aos 3 servidores (Reator, Bio-Estufa, Defesa) e aperte [ESPAÇO] para comparar os protocolos e ver a conta final antes de decidir.',
+        'RISCO REAL: Suas barras passam de uma fase para outra! Se Energia, Suporte de Vida ou Escudo chegar a 0%, a missão falha e volta à Fase 01. Vença as 3 fases lunares para liberar Marte!'
       ],
       setupTitle: 'REGISTRO DE COMANDANTE',
       setupDesc: 'Personalize seu perfil antes de assumir o controle da estação.',
