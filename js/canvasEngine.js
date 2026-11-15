@@ -1,6 +1,6 @@
 (() => {
   // =========================================================================
-  // 1. DICIONÁRIO BILÍNGUE (INGLÊS PADRÃO + PORTUGUÊS)
+  // 1. DICIONÁRIO BILÍNGUE DA INTERFACE BASE (EN / PT)
   // =========================================================================
   const I18N = {
     en: {
@@ -24,7 +24,7 @@
       enterBtn: 'ENTER STATION >>',
       subtitleM1: '// MODE 1: LUNAR STATION',
       subtitleM2: '// MODE 2: JEZERO CRATER (MARS)',
-      btnDamage: 'TEST DAMAGE (-20)',
+      btnBriefing: 'NASA DATA BRIEF',
       btnSuitM1: 'JUDGE PASS: M1 (STATION)',
       btnSuitM2: 'JUDGE PASS: M2 (EVA MARS)',
       resEnergy: 'ENERGY',
@@ -34,17 +34,7 @@
       interactPrompt: '[SPACE]',
       statusNominal: '// STATUS: NOMINAL',
       statusAlert: '// STATUS: CAUTION - LOW RESOURCE',
-      statusCritical: '// STATUS: CRITICAL ALERT!',
-      apolloWelcome: (name) =>
-        `Welcome aboard, Commander ${name}! Complete all 3 Lunar phases to unlock Mode 2 & the EVA suit (or use JUDGE PASS at the top).`,
-      apolloServer: (name, srvName) =>
-        `Commander ${name}, you accessed ${srvName}. In Stage 2 we will load real NASA telemetry trade-offs here!`,
-      apolloDamageTest: (resName) =>
-        `Diagnostic test: -20% ${resName} registered on HUD trail. Watch my visor expression react to risk levels!`,
-      apolloSuitSwitch: (mode) =>
-        mode === 2
-          ? 'JUDGE PASS active: Mode 2 (Mars) unlocked early and EVA Space Suit equipped!'
-          : 'Returned to Mode 1 (Lunar Station). Regular cadets must clear all 3 Lunar phases to unlock the EVA suit.'
+      statusCritical: '// STATUS: CRITICAL ALERT!'
     },
     pt: {
       langBtn: 'IDIOMA: PT',
@@ -67,7 +57,7 @@
       enterBtn: 'ENTRAR NA ESTAÇÃO >>',
       subtitleM1: '// MODO 1: ESTAÇÃO LUNAR',
       subtitleM2: '// MODO 2: CRATERA JEZERO (MARTE)',
-      btnDamage: 'TESTAR DANO (-20)',
+      btnBriefing: 'DADOS NASA (BRIEF)',
       btnSuitM1: 'PASSE JUIZ: M1 (ESTAÇÃO)',
       btnSuitM2: 'PASSE JUIZ: M2 (EVA MARTE)',
       resEnergy: 'ENERGIA',
@@ -77,43 +67,30 @@
       interactPrompt: '[ESPAÇO]',
       statusNominal: '// STATUS: NOMINAL',
       statusAlert: '// STATUS: ALERTA - RECURSO BAIXO',
-      statusCritical: '// STATUS: PERIGO CRÍTICO!',
-      apolloWelcome: (name) =>
-        `Bem-vindo(a) a bordo, Comandante ${name}! Complete as 3 fases lunares para liberar o Modo 2 e o traje EVA (ou use PASSE JUIZ no topo).`,
-      apolloServer: (name, srvName) =>
-        `Comandante ${name}, você acessou ${srvName}. Na Etapa 2 carregaremos aqui os trade-offs reais da NASA!`,
-      apolloDamageTest: (resName) =>
-        `Teste de diagnóstico: -20% de ${resName} registrado no rastro da HUD. Veja minha expressão mudar com o risco!`,
-      apolloSuitSwitch: (mode) =>
-        mode === 2
-          ? 'PASSE DE JUIZ ativo: Modo 2 (Marte) desbloqueado e Traje Espacial EVA equipado!'
-          : 'Retornado ao Modo 1 (Estação Lunar). Jogadores normais precisam vencer as 3 fases lunares para liberar o traje EVA.'
+      statusCritical: '// STATUS: PERIGO CRÍTICO!'
     }
   };
 
   // =========================================================================
-  // 2. ESTADO GLOBAL DO JOGO
+  // 2. ESTADO VISUAL E ESPACIAL
   // =========================================================================
   const state = {
-    lang: 'en', // Começa em inglês por padrão
+    lang: 'en',
     screen: 'intro', // 'intro' | 'setup' | 'station'
     introIndex: 0,
     introCharIndex: 0,
     introTypingTimer: null,
-    commanderName: 'Hamilton',
+    commanderName: 'Margaret',
     gender: 'female',
+    mode: 1,
     judgePassActive: false,
-    mode: 1, // 1 = Estação Lunar | 2 = Marte
+    modalOpen: false,
     resources: {
       energy: 70,
       life: 70,
       shield: 70
     },
-    damageCycleIndex: 0,
     apolloTalkTicks: 0,
-    apolloLastKey: 'welcome',
-    apolloLastServerName: '',
-    apolloLastResKey: 'shield',
     player: {
       x: 400,
       y: 265,
@@ -131,8 +108,6 @@
   const servers = [
     {
       id: 'reactor',
-      labelEn: 'SERVER 01: REACTOR',
-      labelPt: 'SERVIDOR 01: REATOR',
       shortEn: 'REACTOR',
       shortPt: 'REATOR',
       resourceKey: 'energy',
@@ -142,8 +117,6 @@
     },
     {
       id: 'greenhouse',
-      labelEn: 'SERVER 02: BIO-DOME',
-      labelPt: 'SERVIDOR 02: BIO-ESTUFA',
       shortEn: 'BIO-DOME',
       shortPt: 'ESTUFA',
       resourceKey: 'life',
@@ -153,8 +126,6 @@
     },
     {
       id: 'console',
-      labelEn: 'SERVER 03: DEFENSE',
-      labelPt: 'SERVIDOR 03: DEFESA',
       shortEn: 'DEFENSE',
       shortPt: 'DEFESA',
       resourceKey: 'shield',
@@ -165,7 +136,7 @@
   ];
 
   // =========================================================================
-  // 3. TRANSIÇÃO SUAVE ESTILO RPG ANTIGO + CONTROLE DE IDIOMA
+  // 3. TRANSIÇÃO RETRÔ & IDIOMA
   // =========================================================================
   function transitionToScreen(hideId, showId, afterCallback) {
     const fader = document.getElementById('screen-fader');
@@ -182,34 +153,11 @@
     }, 460);
   }
 
-  function refreshApolloText() {
-    const dict = I18N[state.lang];
-    const el = document.getElementById('apollo-text');
-
-    if (state.apolloLastKey === 'welcome') {
-      el.textContent = dict.apolloWelcome(state.commanderName);
-    } else if (state.apolloLastKey === 'server') {
-      el.textContent = dict.apolloServer(state.commanderName, state.apolloLastServerName);
-    } else if (state.apolloLastKey === 'damage') {
-      const resLabel =
-        state.apolloLastResKey === 'energy'
-          ? dict.resEnergy
-          : state.apolloLastResKey === 'life'
-          ? dict.resLife
-          : dict.resShield;
-      el.textContent = dict.apolloDamageTest(resLabel);
-    } else if (state.apolloLastKey === 'suit') {
-      el.textContent = dict.apolloSuitSwitch(state.mode);
-    }
-    state.apolloTalkTicks = 45;
-  }
-
   function applyLanguage(newLang) {
     state.lang = newLang;
     const dict = I18N[state.lang];
     document.documentElement.lang = newLang === 'en' ? 'en' : 'pt-BR';
 
-    // Atualiza elementos estáticos com data-i18n
     document.querySelectorAll('[data-i18n]').forEach((el) => {
       const key = el.getAttribute('data-i18n');
       if (dict[key]) el.textContent = dict[key];
@@ -220,7 +168,6 @@
       if (dict[key]) el.setAttribute('placeholder', dict[key]);
     });
 
-    // Atualiza botões dinâmicos
     document.getElementById('btn-lang').textContent = dict.langBtn;
     document.getElementById('btn-lang-intro').textContent = dict.langBtn;
     document.getElementById('btn-toggle-suit').textContent =
@@ -228,17 +175,18 @@
     document.getElementById('mission-subtitle').textContent =
       state.mode === 1 ? dict.subtitleM1 : dict.subtitleM2;
 
-    // Atualiza intro ou fala do Apollo conforme a tela atual
     if (state.screen === 'intro') {
       startIntroSlide(state.introIndex);
     } else {
-      refreshApolloText();
       updateApolloStatusHeader();
+      if (window.Simulation) {
+        window.Simulation.onLanguageChange(newLang);
+      }
     }
   }
 
   // =========================================================================
-  // 4. CENA 1: ABERTURA ESPACIAL COM APOLLO COPILOT
+  // 4. CENA 1: ABERTURA ESPACIAL
   // =========================================================================
   const introCanvas = document.getElementById('intro-canvas');
   const introCtx = introCanvas.getContext('2d');
@@ -272,7 +220,7 @@
       if (state.introCharIndex >= fullText.length) {
         clearInterval(state.introTypingTimer);
       }
-    }, 22);
+    }, 20);
   }
 
   function finishIntro() {
@@ -290,7 +238,6 @@
     introCtx.fillStyle = '#03060f';
     introCtx.fillRect(0, 0, introCanvas.width, introCanvas.height);
 
-    // Estrelas em movimento estilo Star Wars
     stars.forEach((s) => {
       s.x -= s.speed;
       if (s.x < 0) {
@@ -301,7 +248,6 @@
       introCtx.fillRect(Math.round(s.x), Math.round(s.y), s.size, s.size);
     });
 
-    // Lua (esquerda) e Marte (direita) em pixel art
     introCtx.fillStyle = '#475569';
     introCtx.fillRect(75, 55, 44, 44);
     introCtx.fillStyle = '#64748b';
@@ -314,31 +260,26 @@
     introCtx.fillRect(524, 58, 18, 8);
     introCtx.fillRect(535, 78, 20, 10);
 
-    // Robô Copiloto Apollo flutuando no centro
     const bobY = Math.round(Math.sin(introFrame * 0.08) * 4);
     const rx = 288;
     const ry = 36 + bobY;
 
-    // Antena
     introCtx.fillStyle = '#94a3b8';
     introCtx.fillRect(rx + 30, ry - 12, 4, 12);
     introCtx.fillStyle = introFrame % 30 < 15 ? '#facc15' : '#38bdf8';
     introCtx.fillRect(rx + 28, ry - 18, 8, 6);
 
-    // Cabeça metálica
     introCtx.fillStyle = '#cbd5e1';
     introCtx.fillRect(rx, ry, 64, 54);
     introCtx.fillStyle = '#090d16';
     introCtx.fillRect(rx + 8, ry + 10, 48, 32);
 
-    // Olhos e boca pixelados
     introCtx.fillStyle = '#22d3ee';
     introCtx.fillRect(rx + 16, ry + 18, 8, 8);
     introCtx.fillRect(rx + 40, ry + 18, 8, 8);
     const mouthH = introFrame % 12 < 6 ? 6 : 3;
     introCtx.fillRect(rx + 24, ry + 32, 16, mouthH);
 
-    // Base propulsora
     introCtx.fillStyle = '#475569';
     introCtx.fillRect(rx + 14, ry + 56, 36, 14);
     introCtx.fillStyle = '#38bdf8';
@@ -348,7 +289,7 @@
   }
 
   // =========================================================================
-  // 5. ROSTO PIXELADO DO COMPUTADOR DE BORDO APOLLO (HUD INFERIOR)
+  // 5. ROSTO PIXELADO DO COMPUTADOR DE BORDO APOLLO
   // =========================================================================
   const apolloCanvas = document.getElementById('apollo-face');
   const apolloCtx = apolloCanvas.getContext('2d');
@@ -430,11 +371,11 @@
   };
 
   const APOLLO_PALETTE = {
-    M: '#94a3b8', // Chassi metálico
-    S: '#060b14', // Tela escura
-    C: '#22d3ee', // Ciano nominal
-    Y: '#facc15', // Amarelo alerta
-    R: '#ef4444'  // Vermelho crítico
+    M: '#94a3b8',
+    S: '#060b14',
+    C: '#22d3ee',
+    Y: '#facc15',
+    R: '#ef4444'
   };
 
   function getLowestResource() {
@@ -458,6 +399,11 @@
     }
   }
 
+  function sayApollo(message) {
+    document.getElementById('apollo-text').textContent = message;
+    state.apolloTalkTicks = 55;
+  }
+
   let globalTick = 0;
   function drawApolloFace() {
     globalTick++;
@@ -475,7 +421,7 @@
     if (state.apolloTalkTicks > 0) state.apolloTalkTicks--;
 
     const matrix = APOLLO_FACES[mood];
-    const px = 4; // 16 * 4 = 64px
+    const px = 4;
 
     apolloCtx.fillStyle = '#030712';
     apolloCtx.fillRect(0, 0, 64, 64);
@@ -484,7 +430,6 @@
       for (let c = 0; c < matrix[r].length; c++) {
         const ch = matrix[r][c];
         if (ch !== '.' && APOLLO_PALETTE[ch]) {
-          // Pisca os pixels vermelhos no modo crítico
           if (mood === 'critical' && ch === 'R' && globalTick % 20 < 8) {
             apolloCtx.fillStyle = '#fca5a5';
           } else {
@@ -497,7 +442,7 @@
   }
 
   // =========================================================================
-  // 6. CENA 3: ESTAÇÃO ESPACIAL E PERSONAGEM PIXELADO
+  // 6. CENA 3: ESTAÇÃO ESPACIAL E MOVIMENTAÇÃO
   // =========================================================================
   const canvas = document.getElementById('station-canvas');
   const ctx = canvas.getContext('2d');
@@ -566,28 +511,37 @@
     ]
   };
 
-  function updateResourceHUD(key, newValue) {
-    const clamped = Math.max(0, Math.min(100, newValue));
-    state.resources[key] = clamped;
+  function setAllResources(stats) {
+    ['energy', 'life', 'shield'].forEach((key) => {
+      const clamped = Math.max(0, Math.min(100, Math.round(stats[key])));
+      state.resources[key] = clamped;
 
-    const box = document.getElementById(`res-${key}`);
-    box.querySelector('.bar-fill').style.width = `${clamped}%`;
-    box.querySelector('.bar-trail').style.width = `${clamped}%`;
-    box.querySelector('.res-value').textContent = `${clamped}%`;
-
+      const box = document.getElementById(`res-${key}`);
+      box.querySelector('.bar-fill').style.width = `${clamped}%`;
+      box.querySelector('.bar-trail').style.width = `${clamped}%`;
+      box.querySelector('.res-value').textContent = `${clamped}%`;
+    });
     updateApolloStatusHeader();
   }
 
+  function setMode(newMode) {
+    state.mode = newMode;
+    const dict = I18N[state.lang];
+    document.getElementById('btn-toggle-suit').textContent =
+      state.mode === 1 ? dict.btnSuitM1 : dict.btnSuitM2;
+    document.getElementById('mission-subtitle').textContent =
+      state.mode === 1 ? dict.subtitleM1 : dict.subtitleM2;
+  }
+
   window.addEventListener('keydown', (e) => {
-    if (state.screen !== 'station') return;
+    if (state.screen !== 'station' || state.modalOpen) return;
     state.keys[e.key.toLowerCase()] = true;
 
     if (e.code === 'Space' && state.nearbyServer) {
       e.preventDefault();
-      state.apolloLastKey = 'server';
-      state.apolloLastServerName =
-        state.lang === 'en' ? state.nearbyServer.labelEn : state.nearbyServer.labelPt;
-      refreshApolloText();
+      if (window.Simulation) {
+        window.Simulation.openServerModal(state.nearbyServer.id);
+      }
     }
   });
 
@@ -596,19 +550,29 @@
   });
 
   canvas.addEventListener('click', (e) => {
-    if (state.screen !== 'station') return;
+    if (state.screen !== 'station' || state.modalOpen) return;
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     const clickX = (e.clientX - rect.left) * scaleX;
     const clickY = (e.clientY - rect.top) * scaleY;
 
+    // Se clicou diretamente em um servidor e já está perto dele, abre o modal
+    for (const srv of servers) {
+      const clickDistToSrv = Math.hypot(clickX - srv.x, clickY - srv.y);
+      const playerDistToSrv = Math.hypot(state.player.x - srv.x, state.player.y - (srv.y + 35));
+      if (clickDistToSrv < 52 && playerDistToSrv < 78 && window.Simulation) {
+        window.Simulation.openServerModal(srv.id);
+        return;
+      }
+    }
+
     state.player.targetX = Math.max(60, Math.min(740, clickX));
     state.player.targetY = Math.max(220, Math.min(315, clickY));
   });
 
   function updateStation() {
-    if (state.screen !== 'station') return;
+    if (state.screen !== 'station' || state.modalOpen) return;
 
     const p = state.player;
     let dx = 0;
@@ -655,7 +619,7 @@
     state.nearbyServer = null;
     for (const srv of servers) {
       const d = Math.hypot(p.x - srv.x, p.y - (srv.y + 35));
-      if (d < 70) {
+      if (d < 72) {
         state.nearbyServer = srv;
         break;
       }
@@ -663,22 +627,18 @@
   }
 
   function drawStation() {
-    // Parede metálica
     ctx.fillStyle = '#0f172a';
     ctx.fillRect(0, 0, canvas.width, 210);
 
-    // Friso pixelado na parede
     ctx.fillStyle = '#1e293b';
     ctx.fillRect(0, 145, canvas.width, 12);
 
-    // Janela panorâmica espacial
     ctx.fillStyle = '#03060f';
     ctx.fillRect(220, 18, 360, 112);
     ctx.strokeStyle = '#64748b';
     ctx.lineWidth = 4;
     ctx.strokeRect(220, 18, 360, 112);
 
-    // Estrelas fixas
     ctx.fillStyle = '#ffffff';
     [
       [245, 38],
@@ -691,14 +651,12 @@
       ctx.fillRect(sx, sy, 3, 3);
     });
 
-    // Superfície planetária na janela (Lua vs Marte)
     ctx.fillStyle = state.mode === 1 ? '#64748b' : '#b45309';
     ctx.fillRect(222, 92, 356, 36);
     ctx.fillStyle = state.mode === 1 ? '#475569' : '#92400e';
     ctx.fillRect(250, 102, 42, 10);
     ctx.fillRect(460, 98, 56, 12);
 
-    // Piso quadriculado da estação
     ctx.fillStyle = '#1e293b';
     ctx.fillRect(0, 210, canvas.width, 140);
     ctx.strokeStyle = '#334155';
@@ -716,35 +674,29 @@
       ctx.stroke();
     }
 
-    // Desenho dos 3 servidores físicos
     const dict = I18N[state.lang];
     servers.forEach((srv) => {
       const val = state.resources[srv.resourceKey];
       const isNear = state.nearbyServer && state.nearbyServer.id === srv.id;
 
-      // Gabinete
       ctx.fillStyle = '#090d16';
       ctx.fillRect(srv.x - 34, srv.y - 46, 68, 72);
       ctx.strokeStyle = isNear ? '#facc15' : '#64748b';
       ctx.lineWidth = 3;
       ctx.strokeRect(srv.x - 34, srv.y - 46, 68, 72);
 
-      // Tela do servidor
       ctx.fillStyle = val < 30 ? '#ef4444' : srv.color;
       ctx.fillRect(srv.x - 24, srv.y - 36, 48, 24);
 
-      // Barrinhas internas simulando telemetria
       ctx.fillStyle = '#090d16';
       ctx.fillRect(srv.x - 20, srv.y - 30, 16, 4);
       ctx.fillRect(srv.x - 20, srv.y - 22, 28, 4);
 
-      // Rótulo do servidor
       ctx.fillStyle = '#e2e8f0';
       ctx.font = '8px "Press Start 2P", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(state.lang === 'en' ? srv.shortEn : srv.shortPt, srv.x, srv.y + 12);
 
-      // Caixa pixelada [SPACE] quando próximo
       if (isNear) {
         ctx.fillStyle = '#090d16';
         ctx.fillRect(srv.x - 42, srv.y - 72, 84, 20);
@@ -758,7 +710,6 @@
       }
     });
 
-    // Personagem Pixelado
     const p = state.player;
     const matrix = state.mode === 2 ? PLAYER_SPRITES.evaSuit : PLAYER_SPRITES[state.gender];
     const scale = 3;
@@ -782,7 +733,6 @@
     }
     ctx.restore();
 
-    // Nome do(a) Comandante acima do personagem
     ctx.fillStyle = '#f8fafc';
     ctx.font = '8px "Press Start 2P", monospace';
     ctx.textAlign = 'center';
@@ -803,7 +753,6 @@
     const dict = I18N[state.lang];
     const fullText = dict.introSlides[state.introIndex];
 
-    // Se ainda está digitando, completa o texto imediatamente
     if (state.introCharIndex < fullText.length) {
       clearInterval(state.introTypingTimer);
       state.introCharIndex = fullText.length;
@@ -834,37 +783,26 @@
 
     transitionToScreen('setup-overlay', null, () => {
       state.screen = 'station';
-      state.apolloLastKey = 'welcome';
-      refreshApolloText();
+      if (window.Simulation) {
+        window.Simulation.startCampaign();
+      }
     });
   });
 
-  // Botão de teste de dano: alterna entre Shield, Energy e Life para validar HUD e rosto do Apollo
-  document.getElementById('btn-test-damage').addEventListener('click', () => {
-    const keys = ['shield', 'energy', 'life'];
-    const targetKey = keys[state.damageCycleIndex % keys.length];
-    state.damageCycleIndex++;
-
-    const nextVal = state.resources[targetKey] <= 10 ? 70 : state.resources[targetKey] - 20;
-    updateResourceHUD(targetKey, nextVal);
-
-    state.apolloLastKey = 'damage';
-    state.apolloLastResKey = targetKey;
-    refreshApolloText();
+  document.getElementById('btn-open-briefing').addEventListener('click', () => {
+    if (window.Simulation) {
+      window.Simulation.openBriefingModal(false);
+    }
   });
 
- document.getElementById('btn-toggle-suit').addEventListener('click', () => {
+  document.getElementById('btn-toggle-suit').addEventListener('click', () => {
     state.judgePassActive = state.mode === 1;
-    state.mode = state.judgePassActive ? 2 : 1;
+    const targetMode = state.judgePassActive ? 2 : 1;
+    setMode(targetMode);
 
-    const dict = I18N[state.lang];
-    document.getElementById('btn-toggle-suit').textContent =
-      state.mode === 1 ? dict.btnSuitM1 : dict.btnSuitM2;
-    document.getElementById('mission-subtitle').textContent =
-      state.mode === 1 ? dict.subtitleM1 : dict.subtitleM2;
-
-    state.apolloLastKey = 'suit';
-    refreshApolloText();
+    if (window.Simulation) {
+      window.Simulation.jumpToMode(targetMode, state.judgePassActive);
+    }
   });
 
   function toggleLang() {
@@ -874,7 +812,21 @@
   document.getElementById('btn-lang').addEventListener('click', toggleLang);
   document.getElementById('btn-lang-intro').addEventListener('click', toggleLang);
 
-  // Inicialização
+  // Ponte pública para o Simulation Engine (Etapa 3)
+  window.GameBridge = {
+    getLang: () => state.lang,
+    getCommanderName: () => state.commanderName,
+    getGender: () => state.gender,
+    getResources: () => ({ ...state.resources }),
+    setAllResources,
+    setMode,
+    setModalOpen: (isOpen) => {
+      state.modalOpen = isOpen;
+      state.keys = {};
+    },
+    sayApollo
+  };
+
   applyLanguage('en');
   renderIntroScene();
   mainLoop();

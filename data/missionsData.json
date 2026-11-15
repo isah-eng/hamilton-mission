@@ -52,7 +52,7 @@
               "immediate": { "energy": 22, "life": -5, "shield": -5 },
               "cascade": {
                 "target": "life",
-                "delta": -5,
+                "delta": -10,
                 "reason": { "en": "Lower cabin heater output from power rationing", "pt": "Aquecimento reduzido pelo racionamento de ontem" }
               }
             },
@@ -63,7 +63,7 @@
               "immediate": { "energy": -12, "life": 15, "shield": 0 },
               "cascade": {
                 "target": "energy",
-                "delta": -10,
+                "delta": -15,
                 "reason": { "en": "Battery bank over-discharged during dusk", "pt": "Banco de baterias sobrecarregado no anoitecer" }
               }
             },
@@ -74,7 +74,7 @@
               "immediate": { "energy": -8, "life": 0, "shield": 12 },
               "cascade": {
                 "target": "energy",
-                "delta": -5,
+                "delta": -12,
                 "reason": { "en": "Radar transmitters drew reserve current", "pt": "Transmissores do radar puxaram corrente reserva" }
               }
             }
@@ -100,7 +100,7 @@
               "immediate": { "energy": -10, "life": 28, "shield": 0 },
               "cascade": {
                 "target": "energy",
-                "delta": -5,
+                "delta": -10,
                 "reason": { "en": "Thermal pumps ran overnight", "pt": "Bombas térmicas operaram durante a noite" }
               }
             },
@@ -111,7 +111,7 @@
               "immediate": { "energy": 25, "life": -8, "shield": 0 },
               "cascade": {
                 "target": "life",
-                "delta": -8,
+                "delta": -14,
                 "reason": { "en": "Cold stress slowed crop oxygen synthesis", "pt": "Frio intenso reduziu a produção de oxigênio" }
               }
             },
@@ -122,7 +122,7 @@
               "immediate": { "energy": -5, "life": 5, "shield": 15 },
               "cascade": {
                 "target": "life",
-                "delta": -5,
+                "delta": -12,
                 "reason": { "en": "Air circulation restricted to core module", "pt": "Circulação de ar restrita ao módulo central" }
               }
             }
@@ -218,7 +218,7 @@
               "immediate": { "energy": -10, "life": 5, "shield": 26 },
               "cascade": {
                 "target": "energy",
-                "delta": -5,
+                "delta": -10,
                 "reason": { "en": "Sunshade angle reduced solar panel yield", "pt": "Ângulo do para-sol reduziu captação elétrica" }
               }
             },
@@ -229,7 +229,7 @@
               "immediate": { "energy": -18, "life": 20, "shield": 5 },
               "cascade": {
                 "target": "shield",
-                "delta": -8,
+                "delta": -14,
                 "reason": { "en": "Exterior hull remained exposed to thermal expansion", "pt": "Casco externo continuou exposto à dilatação térmica" }
               }
             },
@@ -240,7 +240,7 @@
               "immediate": { "energy": 20, "life": -10, "shield": -5 },
               "cascade": {
                 "target": "life",
-                "delta": -10,
+                "delta": -15,
                 "reason": { "en": "Overheated hull warmed up the greenhouse", "pt": "Casco superaquecido esquentou a bio-estufa" }
               }
             }
@@ -266,7 +266,7 @@
               "immediate": { "energy": -12, "life": 28, "shield": 0 },
               "cascade": {
                 "target": "energy",
-                "delta": -5,
+                "delta": -10,
                 "reason": { "en": "Cooling fans drew continuous power", "pt": "Ventoinhas de resfriamento consumiram energia contínua" }
               }
             },
@@ -277,7 +277,7 @@
               "immediate": { "energy": -12, "life": 5, "shield": 25 },
               "cascade": {
                 "target": "life",
-                "delta": -5,
+                "delta": -12,
                 "reason": { "en": "Coolant loop prioritized hull over living quarters", "pt": "Refrigeração priorizou o casco sobre o alojamento" }
               }
             },
@@ -380,7 +380,7 @@
               "immediate": { "energy": -15, "life": 0, "shield": 30 },
               "cascade": {
                 "target": "energy",
-                "delta": -5,
+                "delta": -10,
                 "reason": { "en": "Magnetic coils sustained high current", "pt": "Bobinas magnéticas mantiveram corrente alta" }
               }
             },
@@ -391,7 +391,7 @@
               "immediate": { "energy": -10, "life": 18, "shield": -5 },
               "cascade": {
                 "target": "shield",
-                "delta": -10,
+                "delta": -15,
                 "reason": { "en": "Unprotected hull absorbed secondary radiation", "pt": "Casco desprotegido absorveu radiação secundária" }
               }
             },
@@ -402,7 +402,7 @@
               "immediate": { "energy": 25, "life": -5, "shield": -5 },
               "cascade": {
                 "target": "shield",
-                "delta": -8,
+                "delta": -14,
                 "reason": { "en": "Power surge destabilized shield emitters", "pt": "Pico elétrico desestabilizou emissores do escudo" }
               }
             }
@@ -428,7 +428,7 @@
               "immediate": { "energy": 10, "life": -12, "shield": 28 },
               "cascade": {
                 "target": "life",
-                "delta": -8,
+                "delta": -12,
                 "reason": { "en": "Dark cycle lowered greenhouse oxygen output", "pt": "Ciclo escuro reduziu a produção de oxigênio da estufa" }
               }
             },
@@ -439,7 +439,7 @@
               "immediate": { "energy": -18, "life": 5, "shield": 30 },
               "cascade": {
                 "target": "energy",
-                "delta": -8,
+                "delta": -12,
                 "reason": { "en": "Emergency shield drained reserve cells", "pt": "Escudo de emergência drenou células reserva" }
               }
             },
@@ -513,8 +513,8 @@
           "id": "jezero",
           "name": { "en": "JEZERO CRATER (18.38 N, 77.58 E)", "pt": "CRATERA JEZERO (18.38 N, 77.58 L)" },
           "desc": {
-            "en": "Ancient river delta. Higher solar energy (+10 Energy), higher dust storm exposure.",
-            "pt": "Antigo delta de rio. Maior energia solar (+10 Energia), maior exposição a tempestades de poeira."
+            "en": "Ancient river delta. Higher solar energy (+10 Energy), higher dust storm exposure (-5 Shield).",
+            "pt": "Antigo delta de rio. Maior energia solar (+10 Energia), maior exposição a poeira (-5 Escudo)."
           },
           "statBonus": { "energy": 10, "life": 0, "shield": -5 }
         },
@@ -522,8 +522,8 @@
           "id": "elysium",
           "name": { "en": "ELYSIUM PLANITIA (4.50 N, 135.62 E)", "pt": "PLANÍCIE ELYSIUM (4.50 N, 135.62 L)" },
           "desc": {
-            "en": "Flat volcanic plain. Lower dust turbulence (+10 Shield), lower solar angle.",
-            "pt": "Planície vulcânica plana. Menor turbulência de poeira (+10 Escudo), menor ângulo solar."
+            "en": "Flat volcanic plain. Lower dust turbulence (+10 Shield, +5 Life), lower solar angle (-5 Energy).",
+            "pt": "Planície vulcânica plana. Menor turbulência (+10 Escudo, +5 Vida), menor ângulo solar (-5 Energia)."
           },
           "statBonus": { "energy": -5, "life": 5, "shield": 10 }
         }
@@ -551,8 +551,8 @@
             "pt": "Sensor MEDA: Opacidade da poeira marciana subiu para 2.4 tau, bloqueando 65% da luz nos painéis solares."
           },
           "apolloPrompt": {
-            "en": "SOL 01 // Telemetry logged. No guided hints in Mode 2—analyze the MEDA dust curve and choose your server priority.",
-            "pt": "SOL 01 // Telemetria registrada. Sem dicas guiadas no Modo 2—analise a curva de poeira MEDA e escolha sua prioridade."
+            "en": "RAW TELEMETRY ONLY: Atmospheric optical depth 2.4 tau; photovoltaic input down 65%. Autonomous command active.",
+            "pt": "APENAS TELEMETRIA BRUTA: Profundidade óptica 2.4 tau; entrada fotovoltaica caiu 65%. Comando autônomo ativo."
           },
           "environmentDrain": { "energy": -22, "life": -10, "shield": -5 },
           "actions": [
@@ -563,7 +563,7 @@
               "immediate": { "energy": 26, "life": -5, "shield": -5 },
               "cascade": {
                 "target": "shield",
-                "delta": -5,
+                "delta": -10,
                 "reason": { "en": "Electrostatic pulse briefly weakened exterior field", "pt": "Pulso eletrostático enfraqueceu o campo externo" }
               }
             },
@@ -574,7 +574,7 @@
               "immediate": { "energy": -16, "life": 28, "shield": 0 },
               "cascade": {
                 "target": "energy",
-                "delta": -8,
+                "delta": -14,
                 "reason": { "en": "MOXIE solid-oxide heater drew overnight power", "pt": "Aquecedor do MOXIE consumiu energia durante a noite" }
               }
             },
@@ -583,7 +583,11 @@
               "title": { "en": "SEAL HABITAT AIRLOCKS", "pt": "SELAR COMPORTAS CONTRA POEIRA" },
               "desc": { "en": "Prevents abrasive dust ingress into mechanical joints.", "pt": "Impede entrada de poeira abrasiva nas juntas mecânicas." },
               "immediate": { "energy": -8, "life": 5, "shield": 20 },
-              "cascade": null
+              "cascade": {
+                "target": "energy",
+                "delta": -10,
+                "reason": { "en": "Airlock pressurization pumps drew reserve power", "pt": "Bombas de pressurização consumiram energia reserva" }
+              }
             }
           ]
         },
@@ -596,8 +600,8 @@
             "pt": "Evento Solar Histórico (10/05/2024): CME a 1.450 km/s atingindo a atmosfera fina de Marte. Radiação RAD subindo!"
           },
           "apolloPrompt": {
-            "en": "SOL 02 // Space weather & RAD telemetry active. Decide how to allocate resources across Reactor, Bio-Dome, or Defense.",
-            "pt": "SOL 02 // Clima espacial e telemetria RAD ativos. Decida como alocar recursos entre Reator, Bio-Estufa ou Defesa."
+            "en": "RAW TELEMETRY ONLY: High-speed CME shockwave impacting thin Martian atmosphere; Curiosity RAD dose rate spiking.",
+            "pt": "APENAS TELEMETRIA BRUTA: Onda de choque CME atingindo atmosfera fina de Marte; taxa de radiação RAD em pico."
           },
           "environmentDrain": { "energy": -10, "life": -12, "shield": -24 },
           "actions": [
@@ -608,7 +612,7 @@
               "immediate": { "energy": -12, "life": -8, "shield": 32 },
               "cascade": {
                 "target": "life",
-                "delta": -6,
+                "delta": -10,
                 "reason": { "en": "Water diverted from hydroponic irrigation", "pt": "Água desviada da irrigação hidropônica" }
               }
             },
@@ -619,7 +623,7 @@
               "immediate": { "energy": 28, "life": 0, "shield": 8 },
               "cascade": {
                 "target": "shield",
-                "delta": -6,
+                "delta": -12,
                 "reason": { "en": "Thermal radiator vents opened for fission core", "pt": "Radiadores térmicos abertos para o núcleo de fissão" }
               }
             },
@@ -628,7 +632,11 @@
               "title": { "en": "CLOSED-LOOP BIO REGENERATION", "pt": "REGENERAÇÃO BIOLÓGICA FECHADA" },
               "desc": { "en": "Maximizes oxygen and food output under storm conditions.", "pt": "Maximiza oxigênio e alimentos durante a tempestade." },
               "immediate": { "energy": -14, "life": 28, "shield": 0 },
-              "cascade": null
+              "cascade": {
+                "target": "shield",
+                "delta": -10,
+                "reason": { "en": "Outer hull fields left unboosted during proton peak", "pt": "Campos externos ficaram sem reforço no pico de prótons" }
+              }
             }
           ]
         },
@@ -637,12 +645,12 @@
           "nasaValue": 0.9,
           "nasaUnit": "tau (Clearing Sky)",
           "nasaInsight": {
-            "en": "SOL 03 // Dust settling to 0.9 tau and radiation subsiding. Final sol before orbital resupply window.",
-            "pt": "SOL 03 // Poeira baixando para 0.9 tau e radiação cedendo. Último sol antes da janela de reabastecimento."
+            "en": "Dust settling to 0.9 tau and radiation subsiding. Final sol before orbital resupply window.",
+            "pt": "Poeira baixando para 0.9 tau e radiação cedendo. Último sol antes da janela de reabastecimento."
           },
           "apolloPrompt": {
-            "en": "SOL 03 // Final autonomous check. Ensure Energy, Life Support, and Shield all finish above 0%.",
-            "pt": "SOL 03 // Verificação autônoma final. Garanta que Energia, Suporte de Vida e Escudo terminem acima de 0%."
+            "en": "RAW TELEMETRY ONLY: Dust opacity 0.9 tau; radiation subsiding. Final sol before orbital resupply window.",
+            "pt": "APENAS TELEMETRIA BRUTA: Opacidade 0.9 tau; radiação cedendo. Último sol antes da janela orbital."
           },
           "environmentDrain": { "energy": -12, "life": -14, "shield": -12 },
           "actions": [

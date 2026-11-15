@@ -469,3 +469,280 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================================
+   ETAPA 3: FAIXA DE TELEMETRIA NASA & MODAIS DE SIMULAÇÃO RPG
+   ========================================================================= */
+.telemetry-strip {
+  padding: 9px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: #081220;
+  border-color: #38bdf8;
+}
+
+.tele-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.tele-phase {
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  color: #facc15;
+}
+
+.tele-reading {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  color: #e0f2fe;
+}
+
+.tele-feed-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  padding: 4px 8px;
+  background: #0f172a;
+  border: 2px solid #4ade80;
+  color: #4ade80;
+}
+
+.tele-feed-badge.live {
+  border-color: #facc15;
+  color: #facc15;
+}
+
+/* MODAL DE MISSÃO / SERVIDOR / MEDALHA */
+.modal-card {
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid var(--border-mid);
+  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  font-family: var(--font-pixel);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #facc15;
+}
+
+.modal-body-text {
+  font-size: 1.3rem;
+  line-height: 1.3;
+  color: #e2e8f0;
+}
+
+.nasa-source-box {
+  background: #060b14;
+  border: 2px solid #38bdf8;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nasa-source-box small {
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  color: #38bdf8;
+}
+
+.nasa-source-box p {
+  font-size: 1.22rem;
+  color: #bae6fd;
+}
+
+/* CARTÃO DE TRADE-OFF DO SERVIDOR */
+.action-panel {
+  background: #060b14;
+  border: 2px solid var(--border-light);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-panel h3 {
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: #38bdf8;
+}
+
+.stat-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stat-pill {
+  font-family: var(--font-pixel);
+  font-size: 0.54rem;
+  padding: 6px 8px;
+  border: 2px solid var(--border-mid);
+  background: #0f172a;
+}
+
+.stat-pill.pos {
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+.stat-pill.neg {
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+.cascade-warning {
+  background: #1c1008;
+  border: 2px solid #f59e0b;
+  padding: 8px 10px;
+  font-size: 1.18rem;
+  color: #fde68a;
+}
+
+.drain-preview {
+  background: #170a0e;
+  border: 2px solid #be123c;
+  padding: 10px 12px;
+}
+
+.drain-preview-title {
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  color: #fda4af;
+  margin-bottom: 6px;
+}
+
+/* SELETOR DE POUSO EM MARTE (MODO 2) */
+.landing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.landing-option {
+  background: #060b14;
+  border: 2px solid var(--border-mid);
+  padding: 12px;
+  text-align: left;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.landing-option.selected {
+  border-color: #facc15;
+  background: #172554;
+}
+
+.landing-option strong {
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  line-height: 1.4;
+  color: #facc15;
+}
+
+.landing-option span {
+  font-size: 1.15rem;
+  color: #cbd5e1;
+}
+
+/* CARTÃO DE MEDALHA & CIÊNCIA CIDADÃ */
+.medal-banner {
+  background: #172554;
+  border: 2px solid #facc15;
+  padding: 12px;
+  text-align: center;
+}
+
+.medal-banner span {
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  color: #93c5fd;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.medal-banner strong {
+  font-family: var(--font-pixel);
+  font-size: 0.72rem;
+  color: #facc15;
+  line-height: 1.4;
+}
+
+.citizen-card {
+  background: #051b14;
+  border: 2px solid #4ade80;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.citizen-card strong {
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  color: #4ade80;
+}
+
+.citizen-card p {
+  font-size: 1.2rem;
+  color: #dcfce7;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .landing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rank-badge {
+  margin-top: 8px;
+  display: inline-block;
+  padding: 5px 10px;
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  border: 2px solid #38bdf8;
+  background: #090d16;
+  color: #38bdf8;
+}
+
+.rank-badge.emergency {
+  border-color: #f59e0b;
+  color: #fbbf24;
+}
+
+.rank-badge.distinction {
+  border-color: #4ade80;
+  color: #4ade80;
+}
