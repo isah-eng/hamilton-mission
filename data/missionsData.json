@@ -1,0 +1,675 @@
+{
+  "missions": [
+    {
+      "id": "lunar_1_apollo",
+      "mode": 1,
+      "order": 1,
+      "title": {
+        "en": "PHASE 01: LUNAR NIGHT & POWER RATIONING",
+        "pt": "FASE 01: NOITE LUNAR E RACIONAMENTO"
+      },
+      "historyRef": {
+        "en": "Inspired by Apollo 13 (1970) power-down survival protocol & NASA POWER Lunar Irradiance data.",
+        "pt": "Inspirado no protocolo de economia da Apollo 13 (1970) e nos dados de irradiância lunar NASA POWER."
+      },
+      "source": "NASA POWER & LRO Solar Irradiance Dataset",
+      "telemetryLabel": {
+        "en": "Solar Irradiance",
+        "pt": "Irradiância Solar"
+      },
+      "nasaUnit": "W/m2",
+      "medal": {
+        "en": "APOLLO RESILIENCE MEDAL",
+        "pt": "MEDALHA APOLLO DE RESILIÊNCIA"
+      },
+      "citizenScience": {
+        "project": "NASA GLOBE Observer",
+        "url": "https://observer.globe.gov/",
+        "pitch": {
+          "en": "Real-World Mission Unlocked: Help NASA scientists track clouds, surface temperature, and local climate from Earth using your phone!",
+          "pt": "Missão Real Desbloqueada: Ajude cientistas da NASA a monitorar nuvens, temperatura e clima local da Terra usando o celular!"
+        }
+      },
+      "initialStats": { "energy": 70, "life": 70, "shield": 75 },
+      "turns": [
+        {
+          "turn": 1,
+          "nasaValue": 180,
+          "nasaInsight": {
+            "en": "Sunset on the Lunar South Pole: solar irradiance plunged from 1,361 W/m2 to 180 W/m2.",
+            "pt": "Pôr do sol no Polo Sul Lunar: a irradiância solar caiu de 1.361 W/m2 para 180 W/m2."
+          },
+          "apolloPrompt": {
+            "en": "Commander, solar generation just dropped by 87%! Visit the REACTOR to ration non-essential power before batteries drain.",
+            "pt": "Comandante, a geração solar caiu 87%! Vá ao REATOR para racionar energia antes que as baterias esvaziem."
+          },
+          "environmentDrain": { "energy": -18, "life": -5, "shield": 0 },
+          "actions": [
+            {
+              "server": "reactor",
+              "title": { "en": "APOLLO RATIONING PROTOCOL", "pt": "PROTOCOLO DE RACIONAMENTO APOLLO" },
+              "desc": { "en": "Shut down non-essential consoles to preserve battery reserves.", "pt": "Desliga consoles secundários para preservar as baterias." },
+              "immediate": { "energy": 22, "life": -5, "shield": -5 },
+              "cascade": {
+                "target": "life",
+                "delta": -5,
+                "reason": { "en": "Lower cabin heater output from power rationing", "pt": "Aquecimento reduzido pelo racionamento de ontem" }
+              }
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "KEEP FULL GROW LIGHTS", "pt": "MANTER LUZES MÁXIMAS NA ESTUFA" },
+              "desc": { "en": "Protects oxygen output now, but drains heavy battery power.", "pt": "Protege o oxigênio agora, mas consome muita bateria." },
+              "immediate": { "energy": -12, "life": 15, "shield": 0 },
+              "cascade": {
+                "target": "energy",
+                "delta": -10,
+                "reason": { "en": "Battery bank over-discharged during dusk", "pt": "Banco de baterias sobrecarregado no anoitecer" }
+              }
+            },
+            {
+              "server": "console",
+              "title": { "en": "STANDBY RADAR SWEEP", "pt": "VARREDURA DE RADAR EM ESPERA" },
+              "desc": { "en": "Reinforces hull sensors despite low radiation risk.", "pt": "Reforça sensores do casco mesmo com baixo risco solar." },
+              "immediate": { "energy": -8, "life": 0, "shield": 12 },
+              "cascade": {
+                "target": "energy",
+                "delta": -5,
+                "reason": { "en": "Radar transmitters drew reserve current", "pt": "Transmissores do radar puxaram corrente reserva" }
+              }
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "nasaValue": 0,
+          "nasaInsight": {
+            "en": "Total Lunar Shadow: 0 W/m2 solar input. Surface temperature is dropping toward -173 C.",
+            "pt": "Sombra Lunar Total: 0 W/m2 de luz solar. A temperatura externa está caindo rumo a -173 C."
+          },
+          "apolloPrompt": {
+            "en": "Zero solar power and freezing cold! Head to the BIO-DOME to insulate life support without blacking out the station.",
+            "pt": "Energia solar zerada e frio extremo! Vá até a BIO-ESTUFA para isolar o suporte de vida sem causar apagão."
+          },
+          "environmentDrain": { "energy": -15, "life": -20, "shield": -5 },
+          "actions": [
+            {
+              "server": "greenhouse",
+              "title": { "en": "THERMAL BLANKET & O2 RECYCLE", "pt": "ISOLAMENTO TÉRMICO E RECICLAGEM O2" },
+              "desc": { "en": "Seals dome heat and recycles air with modest battery cost.", "pt": "Retém calor na cúpula e recicla ar com gasto moderado." },
+              "immediate": { "energy": -10, "life": 28, "shield": 0 },
+              "cascade": {
+                "target": "energy",
+                "delta": -5,
+                "reason": { "en": "Thermal pumps ran overnight", "pt": "Bombas térmicas operaram durante a noite" }
+              }
+            },
+            {
+              "server": "reactor",
+              "title": { "en": "AUXILIARY FUEL CELL BURST", "pt": "PULSO DE CÉLULA DE COMBUSTÍVEL" },
+              "desc": { "en": "Recharges batteries quickly, leaving cabin cold.", "pt": "Recarrega baterias rápido, mas deixa a cabine fria." },
+              "immediate": { "energy": 25, "life": -8, "shield": 0 },
+              "cascade": {
+                "target": "life",
+                "delta": -8,
+                "reason": { "en": "Cold stress slowed crop oxygen synthesis", "pt": "Frio intenso reduziu a produção de oxigênio" }
+              }
+            },
+            {
+              "server": "console",
+              "title": { "en": "SEAL EXTERIOR BULKHEADS", "pt": "SELAR COMPORTAS EXTERNAS" },
+              "desc": { "en": "Protects hull pressure against thermal contraction.", "pt": "Protege a pressão do casco contra contração térmica." },
+              "immediate": { "energy": -5, "life": 5, "shield": 15 },
+              "cascade": {
+                "target": "life",
+                "delta": -5,
+                "reason": { "en": "Air circulation restricted to core module", "pt": "Circulação de ar restrita ao módulo central" }
+              }
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "nasaValue": 45,
+          "nasaInsight": {
+            "en": "First Dawn Glint: 45 W/m2 hitting crater rim. Batteries at critical threshold before full recharge.",
+            "pt": "Primeiro Brilho do Amanhecer: 45 W/m2 na borda da cratera. Baterias no limite antes da recarga."
+          },
+          "apolloPrompt": {
+            "en": "Final stretch before sunrise! Balance your lowest bar at the REACTOR or BIO-DOME to complete the shift safely.",
+            "pt": "Reta final antes do amanhecer! Equilibre sua barra mais baixa no REATOR ou BIO-ESTUFA para fechar o turno."
+          },
+          "environmentDrain": { "energy": -12, "life": -12, "shield": -5 },
+          "actions": [
+            {
+              "server": "reactor",
+              "title": { "en": "ALIGN SOLAR TRACKERS", "pt": "ALINHAR RASTREADORES SOLARES" },
+              "desc": { "en": "Captures early dawn rays to stabilize station power.", "pt": "Capta os primeiros raios solares para estabilizar a energia." },
+              "immediate": { "energy": 24, "life": -5, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "EMERGENCY OXYGEN RELEASE", "pt": "LIBERAÇÃO DE OXIGÊNIO RESERVA" },
+              "desc": { "en": "Restores breathable air reserves to safe levels.", "pt": "Restaura as reservas de ar respirável para níveis seguros." },
+              "immediate": { "energy": -8, "life": 24, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "console",
+              "title": { "en": "FULL SYSTEM DIAGNOSTIC", "pt": "DIAGNÓSTICO COMPLETO DO CASCO" },
+              "desc": { "en": "Stabilizes hull integrity for daytime operations.", "pt": "Estabiliza a integridade do casco para operações diurnas." },
+              "immediate": { "energy": -5, "life": 0, "shield": 20 },
+              "cascade": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lunar_2_skylab",
+      "mode": 1,
+      "order": 2,
+      "title": {
+        "en": "PHASE 02: SKYLAB THERMAL PEAK",
+        "pt": "FASE 02: PICO TÉRMICO SKYLAB"
+      },
+      "historyRef": {
+        "en": "Inspired by Skylab's 1973 parasol sunshield rescue & LRO Diviner lunar surface temperature peaks.",
+        "pt": "Inspirado no resgate térmico da estação Skylab (1973) e nos dados térmicos do sensor LRO Diviner."
+      },
+      "source": "NASA LRO Diviner Lunar Radiometer Experiment",
+      "telemetryLabel": {
+        "en": "Surface Thermal Load",
+        "pt": "Carga Térmica da Superfície"
+      },
+      "nasaUnit": "K",
+      "medal": {
+        "en": "SKYLAB ENGINEERING MEDAL",
+        "pt": "MEDALHA SKYLAB DE ENGENHARIA"
+      },
+      "citizenScience": {
+        "project": "NASA Sungrazer Project",
+        "url": "https://sungrazer.nrl.navy.mil/",
+        "pitch": {
+          "en": "Real-World Mission Unlocked: Analyze real solar observatory images to discover previously unseen comets approaching the Sun!",
+          "pt": "Missão Real Desbloqueada: Analise imagens reais de observatórios solares para descobrir cometas inéditos perto do Sol!"
+        }
+      },
+      "initialStats": { "energy": 75, "life": 70, "shield": 65 },
+      "turns": [
+        {
+          "turn": 1,
+          "nasaValue": 375,
+          "nasaInsight": {
+            "en": "LRO Diviner records 375 K (+102 C) on sunlit regolith. Heat is radiating into the station hull.",
+            "pt": "O sensor LRO Diviner registra 375 K (+102 C) no solo lunar. O calor está irradiando para o casco."
+          },
+          "apolloPrompt": {
+            "en": "Hull temperature rising fast! Use DEFENSE to deploy a reflective sunshade like Skylab's crew did.",
+            "pt": "Temperatura do casco subindo rápido! Vá à DEFESA para abrir um para-sol refletivo como na missão Skylab."
+          },
+          "environmentDrain": { "energy": 5, "life": -10, "shield": -20 },
+          "actions": [
+            {
+              "server": "console",
+              "title": { "en": "DEPLOY REFLECTIVE PARASOL", "pt": "ABRIR PARA-SOL REFLETIVO" },
+              "desc": { "en": "Blocks solar infrared heat, slightly shading one solar array.", "pt": "Bloqueia calor infravermelho, fazendo leve sombra num painel." },
+              "immediate": { "energy": -10, "life": 5, "shield": 26 },
+              "cascade": {
+                "target": "energy",
+                "delta": -5,
+                "reason": { "en": "Sunshade angle reduced solar panel yield", "pt": "Ângulo do para-sol reduziu captação elétrica" }
+              }
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "MAXIMIZE WATER COOLING LOOP", "pt": "RESFRIAMENTO MÁXIMO POR ÁGUA" },
+              "desc": { "en": "Cools the cabin rapidly using heavy electrical power.", "pt": "Resfria a cabine rapidamente usando bastante energia elétrica." },
+              "immediate": { "energy": -18, "life": 20, "shield": 5 },
+              "cascade": {
+                "target": "shield",
+                "delta": -8,
+                "reason": { "en": "Exterior hull remained exposed to thermal expansion", "pt": "Casco externo continuou exposto à dilatação térmica" }
+              }
+            },
+            {
+              "server": "reactor",
+              "title": { "en": "HARVEST PEAK SOLAR SURGE", "pt": "CAPTAR PICO DE ENERGIA SOLAR" },
+              "desc": { "en": "Stores maximum electricity while ignoring hull heat.", "pt": "Armazena eletricidade máxima, mas ignora o calor no casco." },
+              "immediate": { "energy": 20, "life": -10, "shield": -5 },
+              "cascade": {
+                "target": "life",
+                "delta": -10,
+                "reason": { "en": "Overheated hull warmed up the greenhouse", "pt": "Casco superaquecido esquentou a bio-estufa" }
+              }
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "nasaValue": 392,
+          "nasaInsight": {
+            "en": "Lunar Noon Peak: 392 K (+119 C). Thermal stress threatens air seal gaskets and electronics.",
+            "pt": "Pico do Meio-Dia Lunar: 392 K (+119 C). O estresse térmico ameaça as vedações de ar e eletrônicos."
+          },
+          "apolloPrompt": {
+            "en": "Peak lunar heat! Check whether LIFE SUPPORT or SHIELD needs urgent cooling at BIO-DOME or DEFENSE.",
+            "pt": "Calor lunar máximo! Veja se SUPORTE DE VIDA ou ESCUDO precisa de resfriamento na BIO-ESTUFA ou DEFESA."
+          },
+          "environmentDrain": { "energy": 0, "life": -18, "shield": -18 },
+          "actions": [
+            {
+              "server": "greenhouse",
+              "title": { "en": "MIST COOLING & HUMIDITY LOCK", "pt": "NEBLINA TÉRMICA E CONTROLE DE UMIDADE" },
+              "desc": { "en": "Protects astronauts and crops from heat exhaustion.", "pt": "Protege astronautas e plantas contra o calor excessivo." },
+              "immediate": { "energy": -12, "life": 28, "shield": 0 },
+              "cascade": {
+                "target": "energy",
+                "delta": -5,
+                "reason": { "en": "Cooling fans drew continuous power", "pt": "Ventoinhas de resfriamento consumiram energia contínua" }
+              }
+            },
+            {
+              "server": "console",
+              "title": { "en": "ACTIVE RADIATOR VENTING", "pt": "DISSIPAÇÃO ATIVA NOS RADIADORES" },
+              "desc": { "en": "Vents excess hull heat into space.", "pt": "Libera o excesso de calor do casco para o espaço." },
+              "immediate": { "energy": -12, "life": 5, "shield": 25 },
+              "cascade": {
+                "target": "life",
+                "delta": -5,
+                "reason": { "en": "Coolant loop prioritized hull over living quarters", "pt": "Refrigeração priorizou o casco sobre o alojamento" }
+              }
+            },
+            {
+              "server": "reactor",
+              "title": { "en": "THROTTLE REACTOR OUTPUT", "pt": "REDUZIR POTÊNCIA INTERNA DO REATOR" },
+              "desc": { "en": "Cuts internal heat generation across all systems.", "pt": "Corta a geração interna de calor em todos os sistemas." },
+              "immediate": { "energy": -5, "life": 12, "shield": 12 },
+              "cascade": null
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "nasaValue": 360,
+          "nasaInsight": {
+            "en": "Afternoon Cooling Begins: 360 K. Thermal load easing, but reserves must stay above zero.",
+            "pt": "Resfriamento Vespertino: 360 K. Carga térmica diminuindo, mas reservas precisam fechar positivas."
+          },
+          "apolloPrompt": {
+            "en": "Heat wave subsiding! Reinforce your lowest system to earn the Skylab Engineering Medal.",
+            "pt": "Onda de calor cedendo! Reforce seu sistema mais baixo para conquistar a Medalha Skylab."
+          },
+          "environmentDrain": { "energy": -10, "life": -10, "shield": -10 },
+          "actions": [
+            {
+              "server": "reactor",
+              "title": { "en": "REBALANCE POWER BUS", "pt": "REBALANCEAR BARRAMENTO ELÉTRICO" },
+              "desc": { "en": "Restores battery charge for evening operations.", "pt": "Restaura carga das baterias para o fim do dia." },
+              "immediate": { "energy": 25, "life": 0, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "REVITALIZE BIO-DOME AIR", "pt": "REVITALIZAR AR DA BIO-ESTUFA" },
+              "desc": { "en": "Boosts oxygen and hydration levels.", "pt": "Eleva os níveis de oxigênio e hidratação." },
+              "immediate": { "energy": -5, "life": 25, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "console",
+              "title": { "en": "LOCK HULL PRESSURE SEALS", "pt": "TRAVAR VEDAÇÕES DE PRESSÃO DO CASCO" },
+              "desc": { "en": "Secures structural shield integrity.", "pt": "Garante a integridade estrutural do escudo." },
+              "immediate": { "energy": -5, "life": 0, "shield": 25 },
+              "cascade": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lunar_3_donki",
+      "mode": 1,
+      "order": 3,
+      "title": {
+        "en": "PHASE 03: SOLAR RADIATION STORM",
+        "pt": "FASE 03: TEMPESTADE DE RADIAÇÃO SOLAR"
+      },
+      "historyRef": {
+        "en": "Real NASA DONKI Coronal Mass Ejection (CME) event paired with LRO/CRaTER lunar radiation & OSDR bio-dome data.",
+        "pt": "Ejeção de Massa Coronal (CME) real do catálogo NASA DONKI combinada com dados CRaTER e OSDR."
+      },
+      "source": "NASA DONKI (CME) + LRO/CRaTER + NASA OSDR",
+      "telemetryLabel": {
+        "en": "Solar Proton Flux",
+        "pt": "Fluxo de Prótons Solares"
+      },
+      "nasaUnit": "pfu",
+      "medal": {
+        "en": "SILVER SNOOPY AWARD (MARS UNLOCKED)",
+        "pt": "PRÊMIO SILVER SNOOPY (MARTE LIBERADO)"
+      },
+      "citizenScience": {
+        "project": "NASA Aurorasaurus & Space Weather",
+        "url": "https://www.aurorasaurus.org/",
+        "pitch": {
+          "en": "Real-World Mission Unlocked: Report real aurora sightings caused by solar storms to help NASA space weather models!",
+          "pt": "Missão Real Desbloqueada: Registre avistamentos reais de auroras causadas por tempestades solares para modelos da NASA!"
+        }
+      },
+      "initialStats": { "energy": 70, "life": 75, "shield": 65 },
+      "turns": [
+        {
+          "turn": 1,
+          "nasaValue": 420,
+          "nasaInsight": {
+            "en": "DONKI Alert: X-Class solar flare launched a 1,350 km/s CME. Proton flux reached 420 pfu on the Moon.",
+            "pt": "Alerta DONKI: Erupção solar classe X lançou uma CME a 1.350 km/s. Fluxo de prótons atingiu 420 pfu na Lua."
+          },
+          "apolloPrompt": {
+            "en": "The Moon has no magnetic field! Move to DEFENSE to energize our magnetic shield before the storm peaks.",
+            "pt": "A Lua não tem campo magnético! Vá à DEFESA para energizar o escudo magnético antes do pico da tempestade."
+          },
+          "environmentDrain": { "energy": -10, "life": -5, "shield": -22 },
+          "actions": [
+            {
+              "server": "console",
+              "title": { "en": "POLARIZE MAGNETIC SHIELD", "pt": "POLARIZAR ESCUDO MAGNÉTICO" },
+              "desc": { "en": "Diverts reactor power to deflect incoming solar protons.", "pt": "Desvia energia do reator para repelir prótons solares." },
+              "immediate": { "energy": -15, "life": 0, "shield": 30 },
+              "cascade": {
+                "target": "energy",
+                "delta": -5,
+                "reason": { "en": "Magnetic coils sustained high current", "pt": "Bobinas magnéticas mantiveram corrente alta" }
+              }
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "SHIELD BIO-DOME CROPS", "pt": "BLINDAR PLANTAS DA BIO-ESTUFA" },
+              "desc": { "en": "Protects OSDR biological cultures, leaving outer hull exposed.", "pt": "Protege culturas biológicas OSDR, mas deixa o casco exposto." },
+              "immediate": { "energy": -10, "life": 18, "shield": -5 },
+              "cascade": {
+                "target": "shield",
+                "delta": -10,
+                "reason": { "en": "Unprotected hull absorbed secondary radiation", "pt": "Casco desprotegido absorveu radiação secundária" }
+              }
+            },
+            {
+              "server": "reactor",
+              "title": { "en": "OVERCLOCK CAPACITORS", "pt": "SOBRECARREGAR CAPACITORES" },
+              "desc": { "en": "Builds energy reserve for upcoming shield pulses.", "pt": "Cria reserva de energia para os próximos pulsos do escudo." },
+              "immediate": { "energy": 25, "life": -5, "shield": -5 },
+              "cascade": {
+                "target": "shield",
+                "delta": -8,
+                "reason": { "en": "Power surge destabilized shield emitters", "pt": "Pico elétrico desestabilizou emissores do escudo" }
+              }
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "nasaValue": 1850,
+          "nasaInsight": {
+            "en": "CRaTER Peak Reading: 1,850 pfu! Severe radiation storm slamming lunar orbit.",
+            "pt": "Leitura Máxima CRaTER: 1.850 pfu! Tempestade severa de radiação atingindo a órbita lunar."
+          },
+          "apolloPrompt": {
+            "en": "Maximum radiation! Sacrifice Bio-Dome lighting at the REACTOR or reinforce DEFENSE to survive the shockwave!",
+            "pt": "Radiação máxima! Sacrifique a luz da Bio-Estufa no REATOR ou reforce a DEFESA para suportar a onda de choque!"
+          },
+          "environmentDrain": { "energy": -10, "life": -12, "shield": -25 },
+          "actions": [
+            {
+              "server": "reactor",
+              "title": { "en": "DIVERT BIO-DOME POWER TO SHIELD", "pt": "DESVIAR ENERGIA DA ESTUFA P/ ESCUDO" },
+              "desc": { "en": "Margaret Hamilton priority override: protects crew from radiation.", "pt": "Prioridade estilo Margaret Hamilton: protege tripulação da radiação." },
+              "immediate": { "energy": 10, "life": -12, "shield": 28 },
+              "cascade": {
+                "target": "life",
+                "delta": -8,
+                "reason": { "en": "Dark cycle lowered greenhouse oxygen output", "pt": "Ciclo escuro reduziu a produção de oxigênio da estufa" }
+              }
+            },
+            {
+              "server": "console",
+              "title": { "en": "EMERGENCY STORM SHELTER MODE", "pt": "MODO ABRIGO DE TEMPESTADE" },
+              "desc": { "en": "Concentrates all shielding around crew quarters.", "pt": "Concentra toda a blindagem ao redor do alojamento." },
+              "immediate": { "energy": -18, "life": 5, "shield": 30 },
+              "cascade": {
+                "target": "energy",
+                "delta": -8,
+                "reason": { "en": "Emergency shield drained reserve cells", "pt": "Escudo de emergência drenou células reserva" }
+              }
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "OXYGEN SCRUBBER OVERDRIVE", "pt": "FILTROS DE OXIGÊNIO NO MÁXIMO" },
+              "desc": { "en": "Keeps air fresh while shield absorbs heavy damage.", "pt": "Mantém o ar puro enquanto o escudo absorve dano pesado." },
+              "immediate": { "energy": -12, "life": 25, "shield": -5 },
+              "cascade": null
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "nasaValue": 310,
+          "nasaInsight": {
+            "en": "Storm Passing: Proton flux dropping to 310 pfu. Station systems recovering from radiation spike.",
+            "pt": "Tempestade Passando: Fluxo caindo para 310 pfu. Sistemas da estação se recuperando do pico."
+          },
+          "apolloPrompt": {
+            "en": "We survived the CME peak! Stabilize your lowest resource now to earn the Silver Snoopy Award and unlock Mars!",
+            "pt": "Sobrevivemos ao pico da CME! Estabilize seu recurso mais baixo agora para ganhar o Silver Snoopy e liberar Marte!"
+          },
+          "environmentDrain": { "energy": -8, "life": -10, "shield": -10 },
+          "actions": [
+            {
+              "server": "greenhouse",
+              "title": { "en": "RESTART BIO-DOME PHOTOSYNTHESIS", "pt": "REINICIAR FOTOSSÍNTESE NA ESTUFA" },
+              "desc": { "en": "Restores crop lighting and oxygen regeneration.", "pt": "Restaura iluminação das plantas e regeneração de oxigênio." },
+              "immediate": { "energy": -8, "life": 28, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "reactor",
+              "title": { "en": "RECHARGE MAIN CAPACITORS", "pt": "RECARREGAR CAPACITORES PRINCIPAIS" },
+              "desc": { "en": "Brings station power back to nominal voltage.", "pt": "Traz a energia da estação de volta à voltagem nominal." },
+              "immediate": { "energy": 28, "life": 0, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "console",
+              "title": { "en": "RECALIBRATE RADIATION SENSORS", "pt": "RECALIBRAR SENSORES DE RADIAÇÃO" },
+              "desc": { "en": "Repairs shield emitters after proton bombardment.", "pt": "Repara emissores do escudo após bombardeio de prótons." },
+              "immediate": { "energy": -6, "life": 0, "shield": 26 },
+              "cascade": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mars_expedition",
+      "mode": 2,
+      "order": 4,
+      "title": {
+        "en": "MODE 2: MARS EXPEDITION (AUTONOMOUS COMMAND)",
+        "pt": "MODO 2: EXPEDIÇÃO MARTE (COMANDO AUTÔNOMO)"
+      },
+      "historyRef": {
+        "en": "Combines Perseverance MEDA dust opacity, Curiosity RAD radiation, MOXIE oxygen production & live NASA DONKI space weather.",
+        "pt": "Combina opacidade de poeira MEDA (Perseverance), radiação RAD (Curiosity), oxigênio MOXIE e clima espacial NASA DONKI."
+      },
+      "source": "NASA Perseverance MEDA + Curiosity RAD + MOXIE + DONKI",
+      "telemetryLabel": {
+        "en": "Mars Hazard Telemetry",
+        "pt": "Telemetria de Risco em Marte"
+      },
+      "nasaUnit": "MEDA/DONKI",
+      "landingSites": [
+        {
+          "id": "jezero",
+          "name": { "en": "JEZERO CRATER (18.38 N, 77.58 E)", "pt": "CRATERA JEZERO (18.38 N, 77.58 L)" },
+          "desc": {
+            "en": "Ancient river delta. Higher solar energy (+10 Energy), higher dust storm exposure.",
+            "pt": "Antigo delta de rio. Maior energia solar (+10 Energia), maior exposição a tempestades de poeira."
+          },
+          "statBonus": { "energy": 10, "life": 0, "shield": -5 }
+        },
+        {
+          "id": "elysium",
+          "name": { "en": "ELYSIUM PLANITIA (4.50 N, 135.62 E)", "pt": "PLANÍCIE ELYSIUM (4.50 N, 135.62 L)" },
+          "desc": {
+            "en": "Flat volcanic plain. Lower dust turbulence (+10 Shield), lower solar angle.",
+            "pt": "Planície vulcânica plana. Menor turbulência de poeira (+10 Escudo), menor ângulo solar."
+          },
+          "statBonus": { "energy": -5, "life": 5, "shield": 10 }
+        }
+      ],
+      "medal": {
+        "en": "MARS COMMANDER CERTIFICATE",
+        "pt": "CERTIFICADO DE COMANDANTE DE MARTE"
+      },
+      "citizenScience": {
+        "project": "NASA AI4Mars (Perseverance Rover)",
+        "url": "https://www.zooniverse.org/projects/hiro-ono/ai4mars",
+        "pitch": {
+          "en": "Real-World Mission Unlocked: Label real Martian rocks and sand in rover photos to train NASA's autonomous driving AI!",
+          "pt": "Missão Real Desbloqueada: Marque rochas e areia em fotos reais de Marte para treinar a IA de direção dos rovers da NASA!"
+        }
+      },
+      "initialStats": { "energy": 65, "life": 65, "shield": 65 },
+      "turns": [
+        {
+          "turn": 1,
+          "nasaValue": 2.4,
+          "nasaUnit": "tau (Dust Opacity)",
+          "nasaInsight": {
+            "en": "MEDA Sensor: Martian dust optical depth jumped to 2.4 tau, blocking 65% of sunlight on solar arrays.",
+            "pt": "Sensor MEDA: Opacidade da poeira marciana subiu para 2.4 tau, bloqueando 65% da luz nos painéis solares."
+          },
+          "apolloPrompt": {
+            "en": "SOL 01 // Telemetry logged. No guided hints in Mode 2—analyze the MEDA dust curve and choose your server priority.",
+            "pt": "SOL 01 // Telemetria registrada. Sem dicas guiadas no Modo 2—analise a curva de poeira MEDA e escolha sua prioridade."
+          },
+          "environmentDrain": { "energy": -22, "life": -10, "shield": -5 },
+          "actions": [
+            {
+              "server": "reactor",
+              "title": { "en": "ELECTROSTATIC DUST CLEARING", "pt": "LIMPEZA ELETROSTÁTICA DE POEIRA" },
+              "desc": { "en": "Pulses voltage across solar panels to shed Martian dust.", "pt": "Pulsa voltagem nos painéis solares para repelir poeira marciana." },
+              "immediate": { "energy": 26, "life": -5, "shield": -5 },
+              "cascade": {
+                "target": "shield",
+                "delta": -5,
+                "reason": { "en": "Electrostatic pulse briefly weakened exterior field", "pt": "Pulso eletrostático enfraqueceu o campo externo" }
+              }
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "RUN MOXIE CO2-TO-O2 CONVERTER", "pt": "ATIVAR CONVERSOR MOXIE (CO2 -> O2)" },
+              "desc": { "en": "Splits Martian CO2 into oxygen using high electrical power.", "pt": "Converte CO2 de Marte em oxigênio usando alta energia elétrica." },
+              "immediate": { "energy": -16, "life": 28, "shield": 0 },
+              "cascade": {
+                "target": "energy",
+                "delta": -8,
+                "reason": { "en": "MOXIE solid-oxide heater drew overnight power", "pt": "Aquecedor do MOXIE consumiu energia durante a noite" }
+              }
+            },
+            {
+              "server": "console",
+              "title": { "en": "SEAL HABITAT AIRLOCKS", "pt": "SELAR COMPORTAS CONTRA POEIRA" },
+              "desc": { "en": "Prevents abrasive dust ingress into mechanical joints.", "pt": "Impede entrada de poeira abrasiva nas juntas mecânicas." },
+              "immediate": { "energy": -8, "life": 5, "shield": 20 },
+              "cascade": null
+            }
+          ]
+        },
+        {
+          "turn": 2,
+          "nasaValue": 1450,
+          "nasaUnit": "km/s (CME Speed)",
+          "nasaInsight": {
+            "en": "Archive Solar Event (2024-05-10): 1,450 km/s CME hitting Mars thin atmosphere. RAD radiation spiking!",
+            "pt": "Evento Solar Histórico (10/05/2024): CME a 1.450 km/s atingindo a atmosfera fina de Marte. Radiação RAD subindo!"
+          },
+          "apolloPrompt": {
+            "en": "SOL 02 // Space weather & RAD telemetry active. Decide how to allocate resources across Reactor, Bio-Dome, or Defense.",
+            "pt": "SOL 02 // Clima espacial e telemetria RAD ativos. Decida como alocar recursos entre Reator, Bio-Estufa ou Defesa."
+          },
+          "environmentDrain": { "energy": -10, "life": -12, "shield": -24 },
+          "actions": [
+            {
+              "server": "console",
+              "title": { "en": "REGOLITH WATER-WALL SHIELDING", "pt": "BLINDAGEM DE ÁGUA E REGOLITO" },
+              "desc": { "en": "Pumps water reserves into hull bladders to block cosmic rays.", "pt": "Bombeia reservas de água para o casco para barrar raios cósmicos." },
+              "immediate": { "energy": -12, "life": -8, "shield": 32 },
+              "cascade": {
+                "target": "life",
+                "delta": -6,
+                "reason": { "en": "Water diverted from hydroponic irrigation", "pt": "Água desviada da irrigação hidropônica" }
+              }
+            },
+            {
+              "server": "reactor",
+              "title": { "en": "KILOPOWER NUCLEAR BACKUP", "pt": "RESERVA NUCLEAR KILOPOWER" },
+              "desc": { "en": "Engages fission backup to feed shield and life support.", "pt": "Aciona reserva de fissão para alimentar escudo e suporte de vida." },
+              "immediate": { "energy": 28, "life": 0, "shield": 8 },
+              "cascade": {
+                "target": "shield",
+                "delta": -6,
+                "reason": { "en": "Thermal radiator vents opened for fission core", "pt": "Radiadores térmicos abertos para o núcleo de fissão" }
+              }
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "CLOSED-LOOP BIO REGENERATION", "pt": "REGENERAÇÃO BIOLÓGICA FECHADA" },
+              "desc": { "en": "Maximizes oxygen and food output under storm conditions.", "pt": "Maximiza oxigênio e alimentos durante a tempestade." },
+              "immediate": { "energy": -14, "life": 28, "shield": 0 },
+              "cascade": null
+            }
+          ]
+        },
+        {
+          "turn": 3,
+          "nasaValue": 0.9,
+          "nasaUnit": "tau (Clearing Sky)",
+          "nasaInsight": {
+            "en": "SOL 03 // Dust settling to 0.9 tau and radiation subsiding. Final sol before orbital resupply window.",
+            "pt": "SOL 03 // Poeira baixando para 0.9 tau e radiação cedendo. Último sol antes da janela de reabastecimento."
+          },
+          "apolloPrompt": {
+            "en": "SOL 03 // Final autonomous check. Ensure Energy, Life Support, and Shield all finish above 0%.",
+            "pt": "SOL 03 // Verificação autônoma final. Garanta que Energia, Suporte de Vida e Escudo terminem acima de 0%."
+          },
+          "environmentDrain": { "energy": -12, "life": -14, "shield": -12 },
+          "actions": [
+            {
+              "server": "reactor",
+              "title": { "en": "FULL ARRAY SUN-TRACKING", "pt": "RASTREAMENTO SOLAR TOTAL" },
+              "desc": { "en": "Recharges main habitat grid as Martian sky clears.", "pt": "Recarrega a rede principal enquanto o céu marciano limpa." },
+              "immediate": { "energy": 28, "life": 0, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "greenhouse",
+              "title": { "en": "MOXIE + GREENHOUSE PEAK SYNC", "pt": "SINCRONIA MOXIE + BIO-ESTUFA" },
+              "desc": { "en": "Secures breathable air reserves for the habitat.", "pt": "Garante reservas de ar respirável para o habitat." },
+              "immediate": { "energy": -8, "life": 28, "shield": 0 },
+              "cascade": null
+            },
+            {
+              "server": "console",
+              "title": { "en": "ORBITAL RELAY BEACON LOCK", "pt": "TRAVAR SINAL COM SATÉLITE ORBITAL" },
+              "desc": { "en": "Stabilizes hull systems and confirms mission completion.", "pt": "Estabiliza sistemas do casco e confirma conclusão da missão." },
+              "immediate": { "energy": -6, "life": 0, "shield": 26 },
+              "cascade": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
